@@ -1,0 +1,711 @@
+/* html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+
+body {
+  margin-bottom: 60px;
+} */
+ /* Reset password*/
+ .full-height {
+  height: 100vh;
+}
+
+.user-box {
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.24);
+}
+
+.btn-upload {
+  border: 1px dashed #7e8696;
+  height: 85px;
+  background-color: white;
+}
+
+.navbar-color {
+  background-color: #0066a7 !important;
+}
+
+.dashboard-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.cancel-btn-color {
+  background-color: white;
+  border: 1px solid #0066a7;
+  color: #0066a7;
+}
+
+
+
+@media (max-width: 768px) {
+  .image-half {
+      height: 50vh;
+  }
+
+  .content-half {
+      height: 50vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 1rem;
+  }
+}
+
+.emailPass{
+  cursor: pointer; position: absolute;  right: 10px; margin-top: -37px;
+}
+
+/* main content css*/
+#main-content {
+  transition: margin-left 0.3s;
+}
+
+
+.offcanvas.show~#main-content {
+  margin-left: 250px;
+  /* margin-left: auto;*/
+  margin-right: auto; 
+  width: auto;
+}
+
+.offcanvas-backdrop.show {
+  background-color: transparent;
+}
+
+
+@media (max-width: 768px) {
+  .offcanvas.show~#main-content {
+      margin-left: 0;
+  }
+
+  .offcanvas {
+      width: 250px;
+      position: fixed;
+      top: 0;
+      left: -250px;
+      transition: left 0.3s;
+  }
+
+  .offcanvas.show {
+      left: 0;
+  }
+}
+
+/*Add/Edit uset*/
+
+.upload-box {
+  width: 50%;
+  margin: 40px auto;
+  padding: 20px;
+  border: 2px dashed #151515;
+  border-radius: 10px;
+  text-align: center;
+}
+
+/*menu*/
+@media only screen and (min-width: 768px) {
+  .menu_table table {
+      table-layout: fixed;
+      max-width: 100% !important;
+  }
+}
+
+/* @media screen and (max-width: 768px) {
+  .offcanvas {
+      visibility: hidden !important;
+      transform: translateX(-100%) !important;
+  }
+
+        .offcanvas.show {
+          left: 0 !important;
+        }
+} */
+
+td:nth-child(2) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+@media only screen and (max-width: 767px) {
+
+  /* Force table to not be like tables anymore */
+  .menu_table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+      display: block;
+  }
+
+  /* Hide table headers (but not display: none;, for accessibility) */
+  .menu_table thead tr {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+  }
+
+  .menu_table td {
+      /* Behave  like a "row" */
+      border: none;
+      /* border-bottom: 1px solid #eee; */
+      position: relative;
+      padding-left: 50% !important;
+  }
+
+  .menu_table td:before {
+      /* Now like a table header */
+      position: absolute;
+      /* Top/left values mimic padding */
+      top: 6px;
+      left: 6px;
+      width: 45%;
+      padding-right: 10px;
+      white-space: nowrap;
+  }
+
+  .menu_table td:nth-child(1) {
+      /* background: #fcfbfb; */
+      height: 100%;
+      top: 0;
+      left: 0;
+      font-weight: bold;
+  }
+
+  /*
+Label the data
+*/
+  .menu_table td:nth-of-type(1):before {
+      content: "Checkbox";
+  }
+
+  .menu_table td:nth-of-type(2):before {
+      content: "Name";
+  }
+
+  .menu_table td:nth-of-type(3):before {
+      content: "Item Type";
+  }
+
+  .menu_table td:nth-of-type(4):before {
+      content: "Rate";
+  }
+
+  .menu_table td:nth-of-type(5):before {
+      content: "Quantity";
+  }
+
+  .menu_table td:nth-of-type(6):before {
+      content: "Available";
+  }
+
+  .menu_table td:nth-of-type(7):before {
+      content: "Action";
+  }
+
+  .dataTables_length {
+      display: none;
+  }
+}
+
+/*table Responsive in user list*/
+
+@media only screen and (min-width: 768px) {
+  .table {
+      table-layout: fixed;
+      max-width: 100% !important;
+  }
+}
+
+/* thead {
+  background: #ddd;
+} */
+
+.table td:nth-child(2) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+@media only screen and (max-width: 767px) {
+
+  /* Force table to not be like tables anymore */
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+      display: block;
+  }
+
+  /* Hide table headers (but not display: none;, for accessibility) */
+  thead tr {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+  }
+
+  td {
+      /* Behave  like a "row" */
+      border: none;
+      /* border-bottom: 1px solid #eee; */
+      position: relative;
+      padding-left: 50% !important;
+  }
+
+  td:before {
+      /* Now like a table header */
+      position: absolute;
+      /* Top/left values mimic padding */
+      top: 6px;
+      left: 6px;
+      width: 45%;
+      padding-right: 10px;
+      white-space: nowrap;
+  }
+
+  .table td:nth-child(1) {
+      /* background: #ccc; */
+      height: 100%;
+      top: 0;
+      left: 0;
+      font-weight: bold;
+  }
+
+  /*
+Label the data
+*/
+  td:nth-of-type(1):before {
+      content: "Name";
+  }
+
+  td:nth-of-type(2):before {
+      content: "Email";
+  }
+
+  td:nth-of-type(3):before {
+      content: "Phone";
+  }
+
+  td:nth-of-type(4):before {
+      content: "Role";
+  }
+
+  td:nth-of-type(5):before {
+      content: "Status";
+  }
+
+  td:nth-of-type(6):before {
+      content: "Action";
+  }
+
+  .dataTables_length {
+      display: none;
+  }
+}
+
+/*Permison Page css*/
+
+@media only screen and (min-width: 768px) {
+  .parent_Table {
+      table-layout: fixed;
+      max-width: 100% !important;
+  }
+}
+
+/* thead {
+  background: #ddd;
+} */
+
+.parent_Table td:nth-child(2) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media only screen and (max-width: 767px) {
+
+  /* Force table to not be like tables anymore */
+ .parent_Table table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+      display: block;
+  }
+
+  /* Hide table headers (but not display: none;, for accessibility) */
+  .parent_Table thead tr {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+  }
+
+ .parent_Table td {
+      /* Behave  like a "row" */
+      border: none;
+      /* border-bottom: 1px solid #eee; */
+      position: relative;
+      padding-left: 50% !important;
+  }
+
+ .parent_Table td:before {
+      /* Now like a table header */
+      position: absolute;
+      /* Top/left values mimic padding */
+      top: 6px;
+      left: 6px;
+      width: 45%;
+      padding-right: 10px;
+      white-space: nowrap;
+  }
+
+ .parent_Table .table td:nth-child(1) {
+      /* background: #ccc; */
+      height: 100%;
+      top: 0;
+      left: 0;
+      font-weight: bold;
+  }
+
+  /*
+Label the data
+*/
+  .parent_Table td:nth-of-type(1):before {
+      content: "Name";
+  }
+
+ .parent_Table td:nth-of-type(2):before {
+      content: "Email";
+  }
+
+  .parent_Table td:nth-of-type(3):before {
+      content: "Phone";
+  }
+
+  .parent_Table td:nth-of-type(4):before {
+      content: "Role";
+  }
+
+ .parent_Table td:nth-of-type(5):before {
+      content: "Status";
+  }
+
+ .parent_Table td:nth-of-type(6):before {
+      content: "Action";
+  }
+
+  .dataTables_length {
+      display: none;
+  }
+}
+
+
+
+@media only screen and (max-width: 767px) {
+ 
+  .permissionsTable table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+      display: block;
+  }
+
+  
+  .permissionsTable thead tr {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+  }
+
+  .permissionsTable td {
+    
+      border: none;
+      border-bottom: 1px solid #eee;
+      position: relative;
+      padding-left: 50% !important;
+  }
+
+  .permissionsTable td:before {
+     
+      position: absolute;
+   
+      top: 6px;
+      left: 6px;
+      width: 45%;
+      padding-right: 10px;
+      white-space: nowrap;
+  }
+
+  .permissionsTable .table td:nth-child(1) {
+      background: #f8f9fa;
+      height: 100%;
+      top: 0;
+      left: 0;
+      font-weight: bold;
+  }
+
+  /*Label the data*/
+  .permissionsTable td:nth-of-type(1):before {
+      content: "Permission";
+  }
+
+  .permissionsTable td:nth-of-type(2):before {
+      content: "Can View";
+  }
+
+  .permissionsTable td:nth-of-type(3):before {
+      content: "Can Add/Edit";
+  }
+
+  .permissionsTable td:nth-of-type(4):before {
+      content: "Can Delete";
+  }
+
+
+  .dataTables_length {
+      display: none;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+ 
+  .table-section table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+      display: block;
+  }
+
+  
+  .table-section thead tr {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+  }
+
+  .table-section td {
+    
+      border: none;
+      border-bottom: 1px solid #eee;
+      position: relative;
+      padding-left: 50% !important;
+  }
+
+  .table-section td:before {
+     
+      position: absolute;
+   
+      top: 6px;
+      left: 6px;
+      width: 45%;
+      padding-right: 10px;
+      white-space: nowrap;
+  }
+
+  .table-section .table td:nth-child(1) {
+      background: #f8f9fa;
+      height: 100%;
+      top: 0;
+      left: 0;
+      font-weight: bold;
+  }
+
+  /*Label the data*/
+  .table-section td:nth-of-type(1):before {
+      content: "Name";
+  }
+
+  .table-section td:nth-of-type(2):before {
+      content: "capacity";
+  }
+
+  .table-section td:nth-of-type(3):before {
+      content: "status";
+  }
+
+  .table-section td:nth-of-type(4):before {
+      content: "Action";
+  }
+
+
+  .dataTables_length {
+      display: none;
+  }
+}
+
+
+
+/*extra changes in ui */  
+body {
+  background-color: #f2f2f2;
+
+}
+
+
+/* .offcanvas-body.offcanvas-header{
+    width: 300px;
+} */
+
+.sidebar-name {
+  color: #7e8696;
+}
+
+
+.white-icon {
+  color: #7e8696 !important;
+}
+
+.sidebarlist-hover:hover {
+  background-color: #e9eaeb;
+}
+
+.blue-color {
+  color: #0066a7;
+}
+
+.offcanvas-backdrop.show {
+  display: none;
+}
+
+.navbar-color {
+  background-color: #0066a7 !important;
+}
+
+.g-white {
+  color: #7e8696;
+}
+
+.up{
+  text-decoration: none;
+}
+
+.category-color {
+  background-color: #f8f8f8;
+  border-right: 1px solid #0066a7;
+}
+
+.col1{
+  width: 40px;
+}
+
+.th1{
+  width: 40px;
+}
+
+/*  */
+
+
+
+.selected-modifier-group {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.group-header label {
+  margin-right: auto; 
+}
+
+.modifier-image {
+  margin-right: 10px; 
+}
+
+.delete-modifier-group {
+  cursor: pointer;
+  height: 20px;
+  width: 20px;
+}
+
+.min-max-container {
+  display: flex;
+  justify-content: flex-start; 
+  gap: 10px; 
+  margin-bottom: 10px; 
+}
+
+.min-max-container select {
+
+  width: auto;
+}
+
+.modifier-rate {
+ 
+  display: block; 
+  margin-bottom: 10px; 
+}
+
+.modifiers-container {
+  margin-top: 10px;
+  padding-left: 20px;
+}
+
+.modifier-item {
+  margin-bottom: 5px;
+  margin-left: 0px;
+  justify-items: flex-end;
+}
+
+
+
+.modifier-name-label {
+  margin-right: 50px; 
+}
+
+.modifier-item {
+  margin-bottom: 5px;
+  display: flex; 
+  align-items: center; 
+}
+
+
+/* table and section */
+.categorylistitem:hover {
+  background-color: white !important;
+  color: #0066a7 !important;
+  font-weight: bold;
+}
+  .action-icons {
+          display: none;
+          margin-left: auto;
+      }
+
+      .section-row:hover .action-icons {
+          display: flex;
+      }
+
+
+
+      /*   menu page
+      } */
+
+      

@@ -1,0 +1,147 @@
+@{
+    ViewData["Title"] = "Home Page";
+}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="~/css/innerpages.css" asp-append-version="true" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    .dropdown-menu[data-bs-popper] {
+        top: 100%;
+        left: -105px !important;
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .card {
+        height: 100%;
+        padding: 15px;
+    }
+
+    .chart-container {
+        height: 220px;
+    }
+
+    .small-card {
+        min-height: 100px;
+    }
+
+    #main-content {
+        background: #f2f2f2 !important;
+    }
+</style>
+<div class="p-3">
+    <h2 class="fw-bold text-primary">Dashboard</h2>
+
+    <!-- Top Row -->
+    <div class="row g-2">
+        <div class="col-md-3 col-sm-6">
+            <div class="card shadow-sm text-center small-card">
+                <i class="bi bi-graph-up text-success fs-3"></i>
+                <h4>₹1630</h4>
+                <p class="text-muted">Total Sales</p>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="card shadow-sm text-center small-card">
+                <i class="bi bi-file-earmark-text text-primary fs-3"></i>
+                <h4>1</h4>
+                <p class="text-muted">Total Orders</p>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="card shadow-sm text-center small-card">
+                <i class="bi bi-cash text-purple fs-3"></i>
+                <h4>₹1630</h4>
+                <p class="text-muted">Avg. Order Value</p>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="card shadow-sm text-center small-card">
+                <i class="bi bi-clock text-danger fs-3"></i>
+                <h4>6.96 mins</h4>
+                <p class="text-muted">Avg. Waiting Time</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Revenue & Customer Growth -->
+    <div class="row g-2 mt-2">
+        <div class="col-lg-6 col-md-12">
+            <div class="card shadow-sm">
+                <h5 class="fw-bold">Revenue</h5>
+                <div class="chart-container">
+                    <canvas id="revenueChart" style="height: 200px;"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-12">
+            <div class="card shadow-sm">
+                <h5 class="fw-bold">Customer Growth</h5>
+                <div class="chart-container">
+                    <canvas id="customerChart" style="height: 200px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Last 4 Cards in a Single Row -->
+    <div class="row g-2 mt-2">
+        <div class="col-md-3 col-6">
+            <div class="card shadow-sm text-center small-card d-flex align-items-center justify-content-center">
+                <i class="bi bi-hourglass-split text-warning fs-3"></i>
+                <p class="text-muted">Waiting List Count</p>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="card shadow-sm text-center small-card d-flex align-items-center justify-content-center">
+                <i class="bi bi-person-plus text-orange fs-3"></i>
+                <p class="text-muted">New Customer Count</p>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="card shadow-sm text-center small-card d-flex align-items-center justify-content-center">
+                <i class="bi bi-person-check text-success fs-3"></i>
+                <p class="text-muted">Returning Customers</p>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="card shadow-sm text-center small-card d-flex align-items-center justify-content-center">
+                <i class="bi bi-cart-check text-primary fs-3"></i>
+                <p class="text-muted">Completed Orders</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js Scripts -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const revenueCtx = document.getElementById("revenueChart").getContext("2d");
+        const customerCtx = document.getElementById("customerChart").getContext("2d");
+
+        new Chart(revenueCtx, {
+            type: "line",
+            data: { labels: Array.from({ length: 31 }, (_, i) => i + 1), datasets: [{ label: "Revenue", data: Array.from({ length: 31 }, () => Math.floor(Math.random() * 2000)), borderColor: "blue", backgroundColor: "rgba(0, 123, 255, 0.1)" }] },
+            options: { maintainAspectRatio: false, responsive: true }
+        });
+
+        new Chart(customerCtx, {
+            type: "line",
+            data: { labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], datasets: [{ label: "Customers", data: [0, 0, 0, 0, 5, 10, 15, 20, 25, 30, 28, 26], borderColor: "green", backgroundColor: "rgba(40, 167, 69, 0.1)" }] },
+            options: { maintainAspectRatio: false, responsive: true }
+        });
+    });
+</script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+    integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>

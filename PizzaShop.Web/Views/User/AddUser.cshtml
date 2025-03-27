@@ -1,0 +1,226 @@
+@model PizzaShop.Domain.ViewModels.UserModel
+
+
+<!-- Main Content -->
+<div class=" user-box mt-4" id="main-content">
+    <nav class="navbar w-90 navbar-light bg-light">
+        <div class="h2 blue-color"><strong>Add New User</strong></div>
+        <form class="form-inline">
+            <div class="d-flex">
+                <div class="">
+                    <button asp-action="UserList"
+                        class="btn btn-outline-secondary bg-light my-sm-0 rounded text-primary" type="submit">
+                        <div class="blue-color"> &lt Back</div>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </nav>
+    <div class="form-control ">
+        <form method="post" enctype="multipart/form-data" asp-action="AddUser">
+            <div class="row my-4">
+                <div class="col">
+                    <input type="text" asp-for="FirstName" class="form-control" placeholder="First name*" required>
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="col">
+                    <input type="text" asp-for="LastName" class="form-control" placeholder="Last name*" required>
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row my-4">
+                <div class="col">
+                    <input type="text" asp-for="UserName" class="form-control" placeholder="User name*" required>
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+                <div class="col">
+                    <div class="col">
+                        <select asp-for="RoleId" class="form-select">
+                            <option value="2">Account Manager</option>
+                            <option value="1">Admin</option>
+                            <option value="4">Chef</option>
+                            <option value="3">User</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row my-4">
+                <div class="col">
+                    <input type="email" asp-for="Email" class="form-control" placeholder="Email*" required>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="col">
+                    <input type="password" asp-for="Password" class="form-control" placeholder="Password*" required>
+                    @* <div class="form-group form-floating mt-2">
+                    <input style="width: 390px; position: relative;" asp-for="Password" type="password"
+                    class="form-control" id="currentPassword" required />
+                    <i class="far fa-eye toggle-password" data-target="Password"
+                    style="cursor: pointer; position: absolute; left: 335px; top: 50%; transform:
+                    translateY(-50%);"></i>
+                    <label for="Password"> Password</label>
+                    </div> *@
+
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col mt-3">
+                @* <input type="file" asp-for="ProfileImage" accept="image/*" id="FileInput" style="display: none;"> *@
+                <input type="file" asp-for="ProfileImage" accept="image/*" id="FileInput" style="display: none;">
+                <button type="button" class="w-100 btn-upload" onclick="OpenFile()">
+                    <div class="upload-icon">
+                        <img class="dashboard-icon" src="~/images/icons/cloud-arrow-up.svg" alt="">
+
+                    </div>
+                    Browse files
+                </button>
+            </div>
+
+            <div class="row mb-3 mt-2">
+                <div class="col-md-4">
+                    <select asp-for="CountryID" id="countryDropdown" class="form-select col-12 col-lg-12"
+                        style="height: 40px;" aria-label="Default select example">
+                        <option value="">Select Country*</option>
+                        @* @foreach (var country in Model.Countries)
+                        {
+                        <option value="@country.CountryId">@country.CountryName</option>
+                        } *@
+                        @foreach (var country in Model.Countries ?? new List<Country>())
+                        {
+                            <option value="@country.CountryId">@country.CountryName</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <select asp-for="StateID" id="stateDropdown" class="form-select col-12 col-lg-12"
+                        style="height: 40px;" aria-label="Default select example">
+                        <option value="">Select State*</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <select asp-for="CityID" id="cityDropdown" class="form-select col-12 col-lg-12"
+                        style="height: 40px;" aria-label="Default select example">
+                        <option value="">Select City*</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <input type="text" asp-for="Zipcode" class="form-control" placeholder="Zipcode*" required>
+                    <span asp-validation-for="Zipcode" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <input type="text" asp-for="Address" class="form-control" placeholder="Address*" required>
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <input type="tel" asp-for="PhoneNumber" class="form-control" placeholder="Phone*">
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+            </div>
+
+            @* <button type="submit" class="btn text-white btn-primary">Create User</button> *@
+            <button type="submit" class="btn navbar-color text-white">Create User</button>
+            <a href="/user/UserList" type="button" class="btn btn-outline-primary">Cancel</a>
+        </form>
+    </div>
+</div>
+
+<script>
+
+    document.getElementById("countryDropdown").addEventListener("change", function () {
+        var countryId = this.value;
+        var stateDropdown = document.getElementById("stateDropdown");
+        var cityDropdown = document.getElementById("cityDropdown");
+
+        stateDropdown.innerHTML = '<option value="">Select State</option>';
+        cityDropdown.innerHTML = '<option value="">Select City</option>';
+
+        if (countryId) {
+            fetch(`/User/GetStates?countryId=${countryId}`)
+                .then(response => response.json())
+                .then(states => {
+                    states.forEach(state => {
+                        var option = document.createElement("option");
+                        option.value = state.stateId;
+                        option.textContent = state.stateName;
+                        stateDropdown.appendChild(option);
+                    });
+                });
+        }
+    });
+
+    document.getElementById("stateDropdown").addEventListener("change", function () {
+        var stateId = this.value;
+        var cityDropdown = document.getElementById("cityDropdown");
+
+        cityDropdown.innerHTML = '<option value="">Select City</option>';
+
+        if (stateId) {
+            fetch(`/User/GetCities?stateId=${stateId}`)
+                .then(response => response.json())
+                .then(cities => {
+                    cities.forEach(city => {
+                        var option = document.createElement("option");
+                        option.value = city.cityId;
+                        option.textContent = city.cityName;
+                        cityDropdown.appendChild(option);
+                    });
+                });
+        }
+    });
+
+    document.getElementById('FileInput').addEventListener('change', function () {
+        var messageDiv = document.getElementById('image-selected-message');
+        var file = this.files[0];
+        var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.svg)$/i;
+        if (!allowedExtensions.exec(file.name)) {
+            alert('Please upload file having extensions .jpeg/.jpg/.png/.svg only.');
+            this.value = '';
+            messageDiv.classList.add('d-none');
+            return false;
+        }
+        if (this.files && this.files.length > 0) {
+            messageDiv.classList.remove('d-none');
+            var fileName = this.files[0].name;
+            messageDiv.textContent = fileName + ' is selected';
+        } else {
+            messageDiv.classList.add('d-none');
+        }
+    });
+
+    function OpenFile() {
+
+        const FileInput = document.getElementById("FileInput");
+        FileInput.click();
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".toggle-password").forEach(icon => {
+            icon.addEventListener("click", function () {
+                const targetId = this.getAttribute("data-target");
+                const passwordField = document.getElementById(targetId);
+
+                // Toggle password visibility
+                if (passwordField.type === "password") {
+                    passwordField.type = "text";
+                    this.classList.remove("fa-eye");
+                    this.classList.add("fa-eye-slash");
+                } else {
+                    passwordField.type = "password";
+                    this.classList.remove("fa-eye-slash");
+                    this.classList.add("fa-eye");
+                }
+            });
+        });
+    });
+
+    @* function OpenFile() {
+
+        const FileInput = document.getElementById("FileInput");
+        FileInput.click();
+        } *@
+</script>

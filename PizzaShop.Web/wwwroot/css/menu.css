@@ -1,0 +1,80 @@
+.closebutton{
+    right: 15px;
+    top: 25px;
+ }
+  .fixedImage{
+    width: 30px;
+
+  }
+  .searchFunctionality{
+    top:13px;
+    right: 11px;
+  }
+  .class{
+    width: 85%;
+  }
+  .tgl{
+    height: 25px;
+    width: 50px !important;
+   
+   }
+  .tgl:checked{
+    background-color: #0066a7 !important;
+  }
+   .check{
+    height: 20px;
+    width: 20px !important;
+   }
+   .check:checked{
+    background-color: #0066a7 !important;
+   }
+   #searchFun:focus{
+    outline: none;
+
+   }
+   .BgColor{
+    background-color: #f2f2f2;
+   }
+   .borders .active{
+    border-bottom: 1px solid #0066a7 !important;
+    
+   }
+   .borderSide{
+    border-right: 2px solid #0066a7 !important;
+   }
+    .active .select{
+    color: #0066a7 !important;
+   }
+   .btn-primary{
+    background-color: #0066a7;
+   }
+   .BlueColor{
+    background-color: #0066a7 !important;
+   }
+   .textBlueColor{
+    color: #0066a7 !important;
+   }
+.list-group .active{
+  background: #c2c1c143 !important;
+}
+
+.action-buttons {
+    display: none !important;
+}
+
+
+.list-group-item:hover .action-buttons {
+    display: flex !important; 
+}
+
+
+.list-group-item:hover {
+    background-color: #f1f1f1 !important; 
+}
+.modifierColor{
+  background-color: #fdf5e6 !important;
+ }
+.SelectExistingModifiersSearch{
+  left: 365px;
+  top:12px;
+}

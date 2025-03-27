@@ -1,0 +1,21 @@
+
+.rightBG{
+    background-color: #d8eff8;
+ }
+ .customer{
+    top: 15px;
+    right: 18px;
+ }
+ .textBlueColor{
+   color: #0066a7;
+  }
+  .BlueColor{
+   background-color: #0066a7 !important;
+  }
+ @media (max-width: 991px) {
+   .right{
+       background: linear-gradient(#ffffff23, rgba(249, 248, 248, 0.119)), url("../images/dominos_background.jpg") no-repeat center ;
+       background-size: cover;
+        
+   }
+ }

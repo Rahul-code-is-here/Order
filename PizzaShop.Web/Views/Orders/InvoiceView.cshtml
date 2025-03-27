@@ -1,0 +1,166 @@
+
+<div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-8 col-12 offset-lg-2">
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-between my-3">
+                                        <h2 class="textBlueColor">Order-Details</h2>
+                                        <a role="button" class="btn btn-outline-secondary py-2" asp-action="OrdersView" asp-controller="Orders">Back</a>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <div class="p-3 rounded-3 shadow-lg bg-light d-sm-flex justify-content-between">
+                                        <div class="info">
+                                            <div class="d-flex  align-items-center">
+                                                <h3 class="m-0">Order Summary</h3>
+                                                <span class="m-0 ms-1 mt-3 p-1 orderStatus">In Progress</span>
+                                            </div>
+                                            <div class="d-flex flex-column">
+                                                <span class="text-nowrap">Invoice No. : #DOM146569546565</span>
+                                                <div>
+                                                    <span class="text-nowrap">Paid on : 20-38-2024 15:25</span>
+                                                    <span class="text-nowrap"> Modified on : 22-25-2025</span>
+                                                    <span class="text-nowrap">Order Duration :</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="export  mt-2 m-sm-0">
+                                            <button type="button" id="exportToExcel"
+                                                class="btn btn-primary d-flex align-items-center justify-content-end">
+                                                <i class="fa-solid fa-file-export me-2 text-white "></i>
+                                                <span>Export</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row g-3 mb-3 ">
+                                <div class="col-12 col-sm-6">
+                                    <div class="p-3 rounded-3 shadow-lg bg-light">
+                                        <div class="my-3">
+                                            <h2>Customer Details</h2>
+                                        </div>
+                                        <div class="d-flex flex-column ">
+                                            <span class="text-nowrap">Name : Arjun Gediya</span>
+                                            <span class="text-nowrap">Phone : 9988776655</span>
+                                            <span class="text-nowrap">No of person : 4</span>
+                                            <span class="text-nowrap">Email : arjun@gmail.com</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6 ">
+                                    <div class="p-3 rounded-3 shadow-lg bg-light h-100">
+                                        <div class="my-3">
+                                            <h2>Table Details</h2>
+                                        </div>
+                                        <div class="d-flex flex-column">
+                                            <span class="text-nowrap">Table : T1</span>
+                                            <span class="text-nowrap">Section : Ground Floor</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="p-3 rounded-3 shadow-lg bg-light">
+                                        <h3>Order Items</h3>
+                                        <div class="table-responsive">
+                                            <table class="table table-light">
+                                                <thead>
+                                                    <tr>
+                                                        <th class=" text-nowrap">Sr.No</th>
+                                                        <th class="text-center text-nowrap">Item</th>
+                                                        <th class="text-center text-nowrap">Quality</th>
+                                                        <th class="text-center text-nowrap">price</th>
+                                                        <th class="text-end text-nowrap">Total Amount</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class=" text-nowrap">1</td>
+                                                        <td class="text-center text-nowrap">
+                                                            <span>
+                                                                Grilled Burger
+                                                            </span>
+                                                            <ul class="list-unstyled ms-3">
+                                                                <li>• Baby Corn</li>
+                                                            </ul>
+                                                        </td>
+                                                        <td class="text-center text-nowrap">
+                                                            <div>1</div>
+                                                            <div>1</div>
+                                                        </td>
+                                                        <td class="text-center text-nowrap">
+                                                            <div>70.00</div>
+                                                            <div>10.00</div>
+                                                        </td>
+                                                        <td class="text-end text-nowrap">
+                                                            <div>70.00</div>
+                                                            <div>10.00</div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class=" text-nowrap">2</td>
+                                                        <td class="text-center text-nowrap">
+                                                            <span>
+                                                                Vegan Spanich
+                                                            </span>
+                                                            <ul class="list-unstyled ms-3">
+                                                                <li>• Mushroom</li>
+                                                            </ul>
+                                                        </td>
+                                                        <td class="text-center text-nowrap">
+                                                            <div>1</div>
+                                                            <div>1</div>
+                                                        </td>
+                                                        <td class="text-center text-nowrap">
+                                                            <div>800.00</div>
+                                                            <div>10.00</div>
+                                                        </td>
+                                                        <td class="text-end text-nowrap">
+                                                            <div>800.00</div>
+                                                            <div>10.00</div>
+                                                        </td>
+                                                    </tr>
+                                                   
+                                                </tbody>
+                                            </table>
+                                            <div class="billing calculation d-flex flex-column align-items-end">
+                                                <div class="d-flex justify-content-between  w-25">
+                                                    <div>SubTotal:</div>
+                                                    <div>₹890</div>
+                                                </div>
+                                                <div class="d-flex justify-content-between  w-25">
+                                                    <div>CGST:</div>
+                                                    <div>₹1060.80</div>
+                                                </div>
+                                                <div class="d-flex justify-content-between w-25">
+                                                    <span class="me-5">GST:</span>
+                                                    <span>₹17.80</span>
+                                                </div>
+                                                <div class="d-flex justify-content-between w-25">
+                                                    <span class="me-5">Other</span>
+                                                    <span>₹44.50</span>
+                                                </div>
+                                                <div class="d-flex justify-content-between w-25">
+                                                    <span class="me-5">Total</span>
+                                                    <span>₹1059.10</span>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>

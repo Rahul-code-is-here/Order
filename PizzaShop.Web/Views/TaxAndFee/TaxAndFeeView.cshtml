@@ -1,0 +1,219 @@
+
+@* @using DataAccessLayer.ViewModels *@
+@using PizzaShop.Domain.ViewModels;
+@model TaxAndFeeViewModel
+@* <h2 class="textBlueColor m-3">Taxes/Fees</h2> *@
+@* <div style="min-height: 500px;" class=" col-md-9 col-xxl-10"> *@
+<div class="row  m-3 m-md-4">
+    <div class="col-md-3 ">
+        <h2 class="textBlueColor mt-2 d-md-none"><span data-bs-toggle="offcanvas">Taxes/Fees</span>
+        </h2>
+        <h2 class="textBlueColor mt-2 d-none d-md-block">Taxes/Fees</h2>
+    </div>
+    <div class="col-md-9  d-flex justify-content-md-end justify-content-center align-items-center">
+        <div class="d-flex justify-content-between justify-content-md-end  align-items-center gap-2 w-100">
+            <div class="position-relative">
+                <input class="inputs" type="text" id="taxSearch" placeholder=" Search">
+                <i class="fa-solid fa-magnifying-glass position-absolute searchFunctionality"></i>
+            </div>
+            <div class=" d-flex gap-2">
+                @* <button type="button" id="deleteSelectedTables" class="btn border"><i class="fa-regular
+                fa-trash-can"></i></button> *@
+                <button type="button" data-bs-toggle="modal" data-bs-target="#AddTax"
+                    class="btn btn-primary d-none d-md-block">+ New
+                    Tax</button>
+                <button type="button" data-bs-toggle="modal" data-bs-target="#AddTax" class="btn btn-primary d-md-none ">+</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row bg-white shadow-lg mx-3 mx-md-4" id="taxContainer">
+    @* partial view will be appeneded here *@
+</div>
+@* </div> *@
+@* modal for add tax *@
+<div class="modal fade " id="AddTax" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class=" modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-secondary">Add New Tax</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="post" id="AddTaxForm">
+                <div class="modal-body">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" asp-for="TaxName" placeholder="Name*">
+                        <label>Name*</label>
+                        <span asp-validation-for="TaxName" class="text-danger"></span>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-floating">
+                                <select class="form-select" asp-for="Taxtype"
+                                    aria-label="Floating label select example">
+                                    <option value="">Tax Type</option>
+                                    <option value="1">Percentage</option>
+                                    <option value="2">FlatAmount</option>
+                                </select>
+                                <label for="floatingSelect">Type*</label>
+                                <span asp-validation-for="Taxtype"
+                                            class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" asp-for="TaxValue" placeholder="Tax Amount*">
+                                <label>Tax Amount*</label>
+                                <span asp-validation-for="TaxValue" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-start align-items-center gap-2">
+                            <div class="form-check form-switch mt-1  d-flex  justify-content-center align-items-center">
+                                <input class="form-check-input tgl"
+                                    asp-for="IsEnabled" type="checkbox">
+                                <p class="m-0 ms-2">IsEnabled</p>
+                                <span asp-validation-for="IsEnabled" class="text-danger"></span>
+                            </div>
+                            <div class="form-check form-switch mt-1  d-flex  justify-content-center align-items-center">
+                                <input class="form-check-input tgl"
+                                    asp-for="DefaultTax" type="checkbox">
+                                <p class="m-0 ms-2">Default</p>
+                                <span asp-validation-for="DefaultTax" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="AddTaxBtn" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@* modal for edit tax *@
+<div class="modal fade " id="editTax" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class=" modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-secondary">Edit Tax</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="post" id="EditTaxForm">
+                 <input type="hidden" id="taxId" asp-for="TaxId">
+                <div class="modal-body">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="EditTaxName" asp-for="TaxName" placeholder="Name*">
+                        <label>Name*</label>
+                        <span asp-validation-for="TaxName" class="text-danger"></span>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-floating">
+                                <select class="form-select" id="EditTaxType" asp-for="Taxtype"
+                                    aria-label="Floating label select example">
+                                    <option value="">Tax Type</option>
+                                    <option value="1">Percentage</option>
+                                    <option value="2">Rs</option>
+                                </select>
+                                <label for="floatingSelect">Type*</label>
+                                <span asp-validation-for="Taxtype"
+                                            class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="EditTaxValue" asp-for="TaxValue" placeholder="Tax Amount*">
+                                <label>Tax Amount*</label>
+                                <span asp-validation-for="TaxValue" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-start align-items-center gap-2">
+                            <div class="form-check form-switch mt-1  d-flex  justify-content-center align-items-center">
+                                <input class="form-check-input tgl" id="EditIsEnabled"
+                                    asp-for="IsEnabled" type="checkbox">
+                                <p class="m-0 ms-2">IsEnabled</p>
+                                <span asp-validation-for="IsEnabled" class="text-danger"></span>
+                            </div>
+                            <div class="form-check form-switch mt-1  d-flex  justify-content-center align-items-center">
+                                <input class="form-check-input tgl" id="EditDefaultTax"
+                                    asp-for="DefaultTax" type="checkbox">
+                                <p class="m-0 ms-2">Default</p>
+                                <span asp-validation-for="DefaultTax" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="EditTaxBtn" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@* modal for delete *@
+<div class="modal fade" id="taxDelete" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class=" modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" >Delete Confirmation </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-flex flex-column align-items-center justify-content-center">
+                <img width="50" src="~/images/toppng.com-warning-icon-2400x2400.png" alt="">
+                <p> Are you sure you want to delete this Tax?</p>
+                <div class="actionButtons">
+                    <a id="deleteTaxConfirmBtn"><button type="button" class="btn btn-primary ">Yes</button></a>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    
+<script>
+$(document).ready(function () {
+    // Clear modal data when the modal is hidden
+    $('#AddTax').on('hidden.bs.modal', function () {
+        // Clear all input fields (text, hidden, number, etc.)
+        $(this).find('input').val('');
+        
+        // Clear dropdowns (reset to default option)
+        $(this).find('select').prop('selectedIndex', 0);
+
+        // Uncheck all checkboxes
+        $(this).find('input[type="checkbox"]').prop('checked', false);
+
+        // Clear textareas (if any)
+        $(this).find('textarea').val('');
+    });
+
+
+    $('#editTax').on('hidden.bs.modal', function () {
+        // Clear all input fields (text, hidden, number, etc.)
+        $(this).find('input').val('');
+        
+        // Clear dropdowns (reset to default option)
+        $(this).find('select').prop('selectedIndex', 0);
+
+        // Uncheck all checkboxes
+        $(this).find('input[type="checkbox"]').prop('checked', false);
+
+        // Clear textareas (if any)
+        $(this).find('textarea').val('');
+    });
+});
+</script>
+    
+    <script src="~/js/taxAndFee.js"></script>
+}

@@ -1,0 +1,25 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\rahul\\OneDrive\\Desktop\\PizzaShops-master\\PizzaShop.Domain\\obj\\Debug\\net7.0\\scopedcss\\projectbundle\\PizzaShop.Domain.bundle.scp.css",
+      "PackagePath": "staticwebassets\\PizzaShop.Domain.bundle.scp.css"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.PizzaShop.Domain.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.build.PizzaShop.Domain.props",
+      "PackagePath": "build\\PizzaShop.Domain.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildMultiTargeting.PizzaShop.Domain.props",
+      "PackagePath": "buildMultiTargeting\\PizzaShop.Domain.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildTransitive.PizzaShop.Domain.props",
+      "PackagePath": "buildTransitive\\PizzaShop.Domain.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

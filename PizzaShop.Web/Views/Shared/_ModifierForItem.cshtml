@@ -1,0 +1,32 @@
+@using PizzaShop.Domain.ViewModels
+@model ModifiersforItems
+<div class="selectedModifier p-3 bg-white rounded" data-value="@Model.ModifierGroupId">
+    <div class=" d-flex justify-content-between">
+        <h5 class="fw-bold d-inline">@Model.ModifierGroupName</h5>
+        <a class="deleteSelectedModifierTrash" role="button"><img src="~/images/icons8-delete-80.png" height="24"
+                width="24" class="fa-regular fa-trash-can "></a>
+    </div>
+
+    <input type="hidden" asp-for="ModifierGroupId" />
+    <div class="d-flex gap-2 mt-2">
+        <select asp-for="MinValue" class="form-select modifier-min-select">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+        </select>
+        <span asp-validation-for="MinValue" class="text-danger"></span>
+        <select asp-for="MaxValue" class="form-select  modifier-max-select">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+        </select>
+        <span asp-validation-for="MaxValue" class="text-danger"></span>
+    </div>
+
+    <ul class="list-unstyled mt-2">
+        @foreach (var items in Model.ModifierItems)
+        {
+            <li>• @items.ModifierItemName <span class="float-end">@items.Rate</span></li>
+        }
+    </ul>
+</div>

@@ -1,0 +1,419 @@
+﻿﻿@* <!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/site.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg bg-primary">
+    <div class="container-fluid">
+      <!-- Sidebar Toggle Button -->
+      <button class="btn btn-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar"
+        aria-controls="sidebar">
+        ☰
+      </button>
+
+      <!-- Profile Dropdown -->
+      <div class="dropdown">
+        <button class="btn  dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <img width="30" src="/images/@ViewBag.UserImage" alt="">
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item d-flex align-items-center" href="#">
+              <img class="me-2" width="30" src="/images/@ViewBag.UserImage"  alt="">
+              <p class="m-0">@ViewBag.UserName</p>
+            </a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item d-flex align-items-center" href="/User/UpdateProfile">
+              <img class="me-2" width="25" src="/images/@ViewBag.UserImage"  alt="">
+              <p class="m-0">My profile</p>
+            </a></li>
+          <li><a class="dropdown-item d-flex align-items-center" href="/Login/ChangePassword">
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                class="bi bi-arrow-clockwise me-2" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z" />
+                <path
+                  d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466" />
+              </svg>
+              Change Password
+            </a></li>
+          <li>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#logoutModal">
+              Logout
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Sidebar -->
+  <div class="offcanvas offcanvas-start bg-light" style="width: 233px;" id="sidebar">
+    <div class="offcanvas-header">
+      <img src="/images/logos/pizzashop_logo.png" height="38px" width="38px" alt="">
+      <h5 class="offcanvas-title ms-2">PIZZASHOP</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <ul class="nav flex-column">
+        <li class="nav-item mt-2">
+          <a class="nav-link text-danger d-flex align-items-center" href="/Home/Dashboard">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-border-all"
+              viewBox="0 0 16 16">
+              <path d="M0 0h16v16H0zm1 1v6.5h6.5V1zm7.5 0v6.5H15V1zM15 8.5H8.5V15H15zM7.5 15V8.5H1V15z" />
+            </svg>
+            <span class="ms-2">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item mt-2">
+          <a href="/User/UserList" class="btn btn-light">
+            <img src="/images/user.png" alt="" width="20" height="20" class="me-2" />
+            <span>Users</span>
+          </a>
+        </li>
+        <li class="nav-item mt-2">
+          <a class="nav-link text-dark d-flex align-items-center" href="/Permission/Role">
+            <img src="~/images/key.png" alt="" height="18" width="18" />
+            <span>Role And Permission</span>
+          </a>
+        </li>
+        <li class="nav-item mt-2">
+          <a class="nav-link text-dark d-flex align-items-center" href="/Menu/Menu">
+            <img src="~/images/menu.png" alt="" height="18" width="18" class="me-2" />
+            <span>Menu</span>
+          </a>
+        </li>
+        <li class="nav-item mt-2">
+          <a class="nav-link text-dark d-flex align-items-center" href="#user">
+            <img src="~/images/icons8-rectangle-50.png" alt="" height="18" width="18" class="me-2" />
+            <span>Table and Section</span>
+          </a>
+        </li>
+        <li class="nav-item mt-2">
+          <a class="nav-link text-dark d-flex align-items-center" href="#maintenance">
+            <img src="~/images/tax.png" alt="" height="18" width="18" class="me-2" />
+            <span>Taxes and Fees</span>
+          </a>
+        </li>
+        <li class="nav-item mt-2">
+          <a class="nav-link text-dark d-flex align-items-center" href="#maintenance">
+            <img src="~/images/icons8-order-50.png" alt="" height="18" width="18" class="me-2" />
+            <span>Order</span>
+          </a>
+        </li>
+        <li class="nav-item mt-2">
+          <a class="nav-link text-dark d-flex align-items-center" href="#settings">
+            <img src="~/images/client_5895695.png" alt="" height="18" width="18" class="me-2" />
+            <span>Customer</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container mt-4" id="main-content">
+    <partial name="_Toaster.cshtml" ></partial>
+    @RenderBody()
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @RenderSection("Scripts", required: false)
+  </div>
+
+  <!-- Logout Modal -->
+  <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to logout?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger" id="confirmLogoutBtn">Logout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS (placed at bottom for performance) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.getElementById("confirmLogoutBtn").addEventListener("click", function () {
+      fetch('/Login/Logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => {
+          if (response.ok) {
+            window.location.href = "/Login"; // Redirect to login after logout
+          } else {
+            alert("Logout failed!");
+          }
+        })
+        .catch(error => console.error("Error logging out:", error));
+    });
+
+
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+</body>
+
+</html> *@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="~/css/bootstrap.min.css">
+  <link rel="stylesheet" href="~/css/style.css">
+  <link rel="stylesheet" href="~/css/site.css">
+  <link rel="stylesheet" href="~/css/menu.css">
+  <link rel="stylesheet" href="~/css/_pizzaCommon.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-color">
+    <div class="container-fluid">
+      <!-- Sidebar Toggle Button -->
+      <button class="btn btn-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar"
+        aria-controls="sidebar">
+        ☰
+      </button>
+
+      <!-- Profile Dropdown -->
+      <div class="btn-group">
+        <img class=" dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" width="35"
+          src="@ViewBag.UserImage " alt="o">
+        <ul class="dropdown-menu dropdown-menu-end ">
+          <li><a class="dropdown-item d-flex align-items-center" href="#">
+              <img class="me-2" width="25" src="@ViewBag.UserImage" alt="">
+              <p class="m-0"> @ViewBag.UserName</p>
+            </a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item d-flex align-items-center" href="/User/UpdateProfile">
+              <img class="me-2 dashboard-icon" height="24" width="24" src="@ViewBag.UserImage " alt="">
+              <p class="m-0">My profile</p>
+            </a></li>
+          <li><a class="dropdown-item d-flex align-items-center" href="/Login/ChangePassword">
+              <img class="dashboard-icon me-1" src="~/images/icons/arrow-clockwise.svg" alt="">
+              <p class="m-0">Change Password</p>
+            </a></li>
+          <li><a class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              <div class="d-flex">
+                <img class="dashboard-icon me-1" src="~/images/icons/box-arrow-right.svg" alt="">
+                <p class="m-0" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</p>
+              </div>
+            </a></li>
+        </ul>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- Sidebar -->
+  <div class="offcanvas offcanvas-start show bg-light" style="width: 250px;" id="sidebar" data-bs-scroll="true"
+    data-bs-backdrop="false">
+    <div class="offcanvas-header">
+      <div class="d-flex justify-content-center">
+        <img class="img-fluid w-50 shop-logo" src="~/images/logos/pizzashop_logo.png" alt="">
+        <div class="ms-2 h6 text-center align-item-center shop-name" style="align-content: center;">
+          <strong>PIZZASHOP</strong>
+        </div>
+        <div><button type="button" class="btn-close d-lg-none" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+      </div>
+
+    </div>
+    <div class="offcanvas-body">
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2 sidebarlist-hover"><a class="nav-link" href="/Home/Dashboard">
+            <div class="d-flex">
+              <div>
+                <img class="dashboard-icon" src="~/images/icons/border-all.svg" alt="">
+              </div>
+
+              <div class="sidebar-name ms-2"><strong>Dashboard</strong></div>
+            </div>
+          </a></li>
+
+        <li class="nav-item mb-2 sidebarlist-hover"><a class="nav-link" href="/User/UserList">
+            <div class="d-flex">
+              <div>
+                <img class="dashboard-icon" src="~/images/icons/people.svg" alt="">
+              </div>
+
+              <div class="sidebar-name ms-2"><strong>User</strong></div>
+            </div>
+          </a></li>
+
+        <li class="nav-item mb-2 sidebarlist-hover"><a class="nav-link" href="/Permission/Role">
+            <div class="d-flex">
+              <div>
+                <img class="dashboard-icon" src="~/images/icons/person-gear.svg" alt="">
+              </div>
+
+              <div class="sidebar-name ms-2"><strong>Role and Permission</strong></div>
+            </div>
+          </a></li>
+        <li class="nav-item mb-2 sidebarlist-hover"><a class="nav-link" asp-action="Menu" asp-controller="SuperAdmin">
+            <div class="d-flex">
+              <div>
+                <img class="dashboard-icon" src="~/images/icons/clipboard.svg" alt="">
+              </div>
+
+              <div class="sidebar-name ms-2"><strong>Menu</strong></div>
+            </div>
+          </a></li>
+        <li class="nav-item mb-2 sidebarlist-hover"><a class="nav-link" href="/TableAndSection/TableAndSection">
+            <div class="d-flex">
+              <div>
+                <img class="dashboard-icon" src="~/images/icons/square.svg" alt="">
+              </div>
+
+              <div class="sidebar-name ms-2"><strong>Table And Section</strong></div>
+            </div>
+          </a></li>
+        <li class="nav-item mb-2 sidebarlist-hover"><a class="nav-link" asp-action="TaxAndFeeView"
+            asp-controller="TaxAndFee">
+            <div class="d-flex">
+              <div>
+                <img class="dashboard-icon" src="~/images/icons/cash-coin.svg" alt="">
+              </div>
+
+              <div class="sidebar-name ms-2"><strong>Taxs And Fees</strong></div>
+            </div>
+          </a></li>
+        <li class="nav-item mb-2 sidebarlist-hover"><a class="nav-link" href="/Orders/OrdersView">
+            <div class="d-flex">
+              <div>
+                <img class="dashboard-icon" src="~/images/icons/clipboard-check.svg" alt="">
+              </div>
+              <div class="sidebar-name ms-2"><strong>Oreders</strong></div>
+            </div>
+          </a></li>
+        <li class="nav-item mb-2 sidebarlist-hover"><a class="nav-link" href="#">
+            <div class="d-flex">
+              <div>
+                <img class="dashboard-icon" src="~/images/icons/person-rolodex.svg" alt="">
+              </div>
+
+              <div class="sidebar-name ms-2"><strong>Customers</strong></div>
+            </div>
+          </a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- Main Content -->
+  <div class="container-fluid mt-4" id="main-content">
+    <partial name="_Toaster.cshtml"></partial>
+    @RenderBody()
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    @RenderSection("Scripts", required: false)
+  </div>
+
+  <!-- Logout Modal -->
+  <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="logoutModalLabel"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="d-flex justify-content-center"><img class="warning-img"
+              src="~/images/toppng.com-warning-icon-2400x2400.png" height="40" width="40" alt=""></div>
+          <div class="d-flex justify-content-center">
+            Are you sure you want to logout?
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="confirmLogoutBtn">Logout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS (placed at bottom for performance) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.getElementById("confirmLogoutBtn").addEventListener("click", function () {
+      fetch('/Login/Logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => {
+          if (response.ok) {
+            window.location.href = "/Login"; // Redirect to login after logout
+          } else {
+            alert("Logout failed!");
+          }
+        })
+        .catch(error => console.error("Error logging out:", error));
+    });
+
+
+  </script>
+  <script src="~/js/addItems.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

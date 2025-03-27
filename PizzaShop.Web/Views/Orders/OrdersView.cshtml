@@ -1,0 +1,81 @@
+@* @using DataAccessLayer.ViewModels *@
+@using PizzaShop.Domain.ViewModels
+@model OrderViewModel
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<div class="container-fluid">
+    <form>
+        <div class="row my-3">
+            <div class="col-12 col-md-2">
+                <h2 class="textBlueColor">Orders</h2>
+            </div>
+            <div class="col-12 col-md-10">
+                <div class="row overflow-hidden d-flex justify-content-end align-items-center">
+                    <div class="col-md-3 col-12 mb-3 mb-md-0">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="OrdersearchFun" placeholder="Search">
+                            <label>Search</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-12 mb-3 mb-md-0">
+                        <div class="form-floating">
+                            <select class="form-select" id="orderStatusId">
+                                @if (Model.AllStatus != null && Model.AllStatus.Count > 0)
+                                {
+                                    foreach (var status in Model.AllStatus)
+                                    {
+                                        <option value="@status.Text">@status.Text</option>
+                                    }
+
+                                }
+                            </select>
+                            <label>Selects Status</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-12 mb-3 mb-md-0">
+                        <div class="form-floating">
+                            <select class="form-select" id="allTimeSearchFilter">
+                                <option value="0">All time</option>
+                                <option value="1">Last 7 days</option>
+                                <option value="2">Last 30 days</option>
+                                <option value="3">Current Month</option>
+                            </select>
+                            <label>Select Time</label>
+                        </div>
+                    </div>
+                    <div class="col-auto my-auto d-flex justify-content-end">
+                        <button type="button" id="exportToExcel"
+                            class="btn btn-primary d-flex align-items-center justify-content-end">
+                            <i class="fa-solid fa-file-export me-2 text-white "></i>
+                            <span>Export</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row d-flex justify-content-end align-items-center">
+            <div class="col-md-3 col-sm-6 col-12 mb-3 mb-md-0">
+                <div class="form-floating">
+                    <input type="date" id="fromdateOrders" class="form-control" placeholder="From Date">
+                    <label for="floatingPassword">From Date</label>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-12 mb-3 mb-md-0">
+                <div class="form-floating">
+                    <input type="date" id="toDateOrders" class="form-control" placeholder="To Date">
+                    <label for="floatingPassword">To Date</label>
+                </div>
+            </div>
+            <div class="col-md-auto d-flex justify-content-md-end justify-content-end gap-2">
+                <button type="button" id="searchOrderBtn" class="btn btn-primary">Search</button>
+                <button type="reset" class="btn btn-outline-secondary">Reset</button>
+            </div>
+        </div>
+    </form>
+    <div id="OrdersList" class="my-4 rounded-3 shadow-lg">
+        @* order list can load here *@
+    </div>
+</div>
+@section Scripts {
+    <script src="~/js/OrdersList.js"></script>
+}

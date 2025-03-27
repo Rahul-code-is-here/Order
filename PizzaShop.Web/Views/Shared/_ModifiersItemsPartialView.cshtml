@@ -1,0 +1,85 @@
+@using PizzaShop.Domain.ViewModels
+@model Pagination<ModifierItemsViewModel>
+<div style="min-height: 600px;" class="table-responsive bg-white">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">
+                    <div class="form-check">
+                        <input class="form-check-input check allCheck" type="checkbox" id="selectAllModifierItems">
+                        <label class="form-check-label ms-2" for="flexCheckDefault">
+                            Name
+                        </label>
+                </th>
+                <th scope="col" class="text-center">Unit</th>
+                <th scope="col" class="text-center">Rate</th>
+                <th scope="col" class="text-center">Quantity</th>
+
+
+                <th scope="col" class="text-center">Action</th>
+                @* // header apply to all col that's why scope *@
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr class="align-self-center eachItem">
+                    <td scope="row">
+                        <div class="form-check d-flex align-items-center">
+                            <input class="form-check-input check checkedIt selectModifierItem"
+                                data-ModifierGroup-id="@item.ModifierGroupId"
+                                data-Delete-ModifierItemId="@item.ModifierItemId" type="checkbox">
+                            <label class="form-check-label ms-2 modifierName" data-mid="@item.ModifierItemId">
+                                @item.ModifierItemName
+                            </label>
+                    </td>
+                    @* <td class="text-center">@item.</td> *@
+                    <td class="text-center">@item.Unit</td>
+                    <td class="text-center">@item.Rate</td>
+                    <td class="text-center">@item.Quantity</td>
+                    <td class="text-center">
+                        <div class="actionButtons d-flex gap-3 justify-content-center align-items-center pt-2">
+                            <a class="link-secondary"><img src="~/images/icons8-pencil-50.png" height="24" width="24"
+                                    class="fa-solid fa-pencil editModifiersItems" data-modifierItemId="@item.ModifierItemId"
+                                    data-bs-toggle="modal" data-bs-target="#editModifierItems"></a>
+                            <img src="~/images/icons8-delete-80.png" height="24" width="24"
+                                class="fa-regular fa-trash-can deleteModifierItem" data-bs-toggle="modal"
+                                data-ModifierGroup-id="@item.ModifierGroupId"
+                                data-Delete-ModifierItemId="@item.ModifierItemId" data-bs-target="#Delete">
+                        </div>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (Model.Items.Count() < 1)
+    {
+        <div class=" text-center">No Items found.</div>
+    }
+</div>
+<div class="pagination  d-flex flex-column flex-md-row justify-content-end bg-white gap-2  pb-2 mt-2 ">
+    <div class=" d-flex justify-content-center align-items-center gap-3 pe-2">
+        <p class="m-0">Items Per Pages:</p>
+        <select class=" px-2" asp-for="PageSize" name='PageSize'>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="@Model.NumberOfItems">All</option>
+        </select>
+    </div>
+    <div class=" d-flex Pages  justify-content-center align-items-center">
+        <p class="m-0 mx-1">Showing @(Model.NumberOfItems == 0 ? 0 : Model.StartIndex)-
+            @(Model.EndIndex < Model.NumberOfItems ? Model.EndIndex : Model.NumberOfItems) of @Model.NumberOfItems</p>
+
+        <button id="ModifierItemPrevious" @(Model.CurrentPage > 1 ? "" : "disabled") type="button"
+            class="btn btn-outline-secondary arrows d-flex justify-content-center align-items-center me-1 p-0"><i
+                class=" m-2">&lt;</i></button>
+        </button>
+
+        <button id="ModifierItemNext" @(Model.CurrentPage < Model.TotalPages ? "" : "disabled") type="button"
+            class="btn btn-outline-secondary arrows d-flex justify-content-center align-items-center me-1  p-0"><i
+                class="m-2">&gt;</i></button></button>
+    </div>
+</div>

@@ -1,0 +1,139 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title> MyMvcApp</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .header {
+            background-color: #0073C6;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header d-flex align-items-center align-items-center justify-content">
+        <span class="logo font25 ms-2">PIZZASHOP</span>
+    </header>
+    <div>
+
+        <p>Welcome to Pizza Shop</p>
+        <p>Please find details below for login into your account</p>
+    </div>
+    <div class="border border-dark">
+        <h3>Login Details</h3>
+        <h4>Username: {{username}}</h4>
+        <h4>Temporary Password: {{pass}}</h4>
+    </div>
+    <p>If you encounter any issue or have any question, please do not hesitate to contact our support team.</p>
+</body>
+
+</html> -->
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New User Details</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .email_template {
+            width: 100vw;
+            height: 100vh;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background-color: #0066a7;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pizzashoplogoimg {
+            height: 50px;
+            width: 59px;
+        }
+
+        .heading {
+            font-size: 28px;
+            margin: 10px 0;
+        }
+
+        .content {
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+
+        .user_data {
+            font-weight: bold;
+            border: 1px solid black;
+        }
+
+        .data_line {
+            padding-top: 10px;
+            padding-left: 5px;
+        }
+
+        .end_of_data {
+            padding-bottom: 10px;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .heading {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="email_template">
+        <div class="header">
+            <img src="~/images/logos/pizzashop_logo.png"  class="pizzashoplogoimg">
+            <h2 class="heading">PIZZASHOP</h2>
+        </div>
+
+        <div class="content">
+            <p>Welcome to Pizza shop</p>
+            <p>Please find the details below for login into your account.</p>
+            <div class="user_data">
+                <div class="data_line">
+                    Login Details:
+                </div>
+                <h4>Email: {{username}}</h4>
+                <h4>Temporary Password: {{pass}}</h4>
+            </div>
+            <p>
+                If you encounter any issues or have any question, please do not hesitate  to contact our support team.
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

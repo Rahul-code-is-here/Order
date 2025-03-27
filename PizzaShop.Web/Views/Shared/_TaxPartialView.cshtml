@@ -1,0 +1,80 @@
+@using PizzaShop.Domain.ViewModels;
+@model Pagination<TaxAndFeeViewModel>
+<div style="min-height: 600px;" class="table-responsive bg-white">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col" class="text-start">Name</th>
+                <th scope="col" class="text-center">Type</th>
+                <th scope="col" class="text-center">IsEnabled</th>
+                <th scope="col" class="text-center">Default</th>
+                <th scope="col" class="text-center">Tax Value</th>
+                <th scope="col" class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Items != null && Model.Items.Count() > 0)
+            {
+                @foreach (var item in Model.Items)
+                {
+                    <tr class="align-self-center">
+                        <td class="text-start">@item.TaxName</td>
+                        <td class="text-center">@item.Taxtype</td>
+                        <td class="text-center">
+                            <div class="form-check form-switch h-100 d-flex justify-content-center">
+                                <input class="form-check-input tgl" type="checkbox" @(item.IsEnabled == true ? "checked" : "")
+                                    disabled>
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <div class="form-check form-switch h-100 d-flex justify-content-center">
+                                <input class="form-check-input tgl" type="checkbox" @(item.DefaultTax == true ? "checked" : "")
+                                    disabled>
+                            </div>
+                        </td>
+                        <td class="text-center">@(item.Taxtype == "Percentage" ? "" : "₹") @item.TaxValue @(item.Taxtype ==
+                    "Percentage" ? "%" : "")</td>
+                        <td class="text-center">
+                            <div class="actionButtons d-flex gap-3 justify-content-center align-items-center pt-2">
+                                <a class="link-secondary"><img src="~/images/icons/pen.svg" height="20" width="20"
+                                        class="editTaxes" data-taxId="@item.TaxId" data-bs-toggle="modal"
+                                        data-bs-target="#editTax"></a>
+                                <img src="~/images/icons8-delete-80.png" height="20" width="20" class="deleteTax"
+                                    data-bs-toggle="modal" data-Delete-taxId="@item.TaxId" data-bs-target="#taxDelete">
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    @if (Model.Items != null && Model.Items.Count() < 1)
+    {
+        <div class=" text-center">No taxes found.</div>
+    }
+
+</div>
+<div class="pagination  d-flex flex-column flex-md-row justify-content-end bg-white gap-2  pb-2 mt-2 ">
+    <div class=" d-flex justify-content-center align-items-center gap-3 pe-2">
+        <p class="m-0">Items Per Pages:</p>
+        <select class=" px-2" id="taxPageSize" asp-for="PageSize" name='PageSize'>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="@Model.NumberOfItems">All</option>
+        </select>
+    </div>
+    <div class=" d-flex Pages  justify-content-center align-items-center">
+        <p class="m-0 mx-1">Showing @(Model.NumberOfItems == 0 ? 0 : Model.StartIndex)-
+            @(Model.EndIndex < Model.NumberOfItems ? Model.EndIndex : Model.NumberOfItems) of @Model.NumberOfItems</p>
+
+        <button id="taxPrevious" @(Model.CurrentPage > 1 ? "" : "disabled") type="button"
+            class="btn btn-outline-secondary arrows d-flex justify-content-center align-items-center me-1 p-0"><i
+                class=" m-2">&lt;</i></button>
+        </button>
+
+        <button id="taxNext" @(Model.CurrentPage < Model.TotalPages ? "" : "disabled") type="button"
+            class="btn btn-outline-secondary arrows d-flex justify-content-center align-items-center me-1  p-0"><i
+                class="m-2">&gt;</i></button></button>
+    </div>
+</div>

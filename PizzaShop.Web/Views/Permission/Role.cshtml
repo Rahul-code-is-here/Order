@@ -1,0 +1,60 @@
+@* 
+
+@model List<PizzaShop.Domain.DataModels.Role>
+
+@{
+    ViewData["Title"] = "Roles";
+}
+
+<div class="bg-white user-box ms-5 me-5 p-5 mt-5">
+    <div class="mt-4 mb-5">
+        <div class="d-flex justify-content-between">
+            <div class="h5"><strong>Role</strong></div>
+            <div class="h5"><strong>Action</strong></div>
+        </div>
+        <hr>
+
+        @foreach (var role in Model)
+        {
+            <div class="d-flex justify-content-between">
+                <div>@role.Name</div>
+                <div>
+                    <a asp-action="RolePermission" asp-route-id="@role.Id">
+                        <img src="~/images/icons/pen.svg" alt="Edit Role">
+                    </a>
+                </div>
+            </div>
+            <hr>
+        }
+    </div>
+</div> *@
+
+@model List<PizzaShop.Domain.DataModels.Role>
+
+@{
+    ViewData["Title"] = "Roles";
+}
+
+<div class="bg-white user-box ms-5 me-5 p-5 mt-5">
+    <div class="mt-4 mb-5">
+        <div class="d-flex justify-content-between">
+            <div class="h5"><strong>Role</strong></div>
+            <div class="h5"><strong>Action</strong></div>
+        </div>
+        <hr>
+
+        @foreach (var role in Model)
+        {
+            <div class="d-flex justify-content-between">
+                <div>@role.Name</div>
+                <div>
+                 
+                    <a asp-controller="Permission" asp-action="RolePermission" asp-route-roleId="@role.Id">
+                        <img src="~/images/icons/pen.svg" alt="Edit Role"> </a>
+
+                </div>
+            </div>
+            <hr>
+        }
+    </div>
+</div>

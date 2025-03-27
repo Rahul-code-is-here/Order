@@ -1,0 +1,1214 @@
+@using PizzaShop.Domain.ViewModels
+
+@model MenuViewModel
+
+<style>
+    @* .modal-backdrop {
+        z-index: -1;
+    } *@
+    .modal {
+        transition: none;
+    }
+</style>
+
+<h2 class="textBlueColor my-3 mx-3 mx-md-5">Menu</h2>
+<div class=" bg-white shadow-lg mx-3 mx-md-5">
+    <div class="row  bg-white rounded">
+        <!-- tabs -->
+        <nav class="p-0">
+            <div class="nav borders nav-tabs" id="my-tab" role="tablist">
+                <button class="nav-link active  d-flex justify-content-center align-items-center" id="nav-home-tab"
+                    data-bs-toggle="tab" data-bs-target="#Item" type="button" role="tab" aria-controls="nav-home"
+                    aria-selected="true"><img src="~/images/add-list.png" height="25" width="25" class="fa-solid fa-list text-secondary">
+                    <p class="m-1 select text-secondary fw-bold">Items</p>
+                </button>
+                <button class="nav-link  d-flex justify-content-center align-items-center " id="nav-modifiers-tab"
+                    data-bs-toggle="tab" data-bs-target="#Modifier" type="button" role="tab" aria-controls="nav-profile"
+                    aria-selected="false"><img src="~/images/triangle_11004056.png" height="25" width="25" class="fa-sharp fa-solid text-secondary fa-border-none">
+                    <p class="m-1 select  text-secondary fw-bold">Modifiers</p>
+                </button>
+            </div>
+        </nav>
+    </div>
+    <div class="row p-1 bg-light">
+    </div>
+    <div class="row bg-white">
+        <div class="col">
+            <div class="tab-content  rounded" id="myTabContent">
+                <div class="tab-pane fade show active" id="Item" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="row">
+                        <div class="col-8 col-sm-8 BgColor col-md-3  col-xxl-2 border-end  borderSide  d-md-block p-0">
+                            <div style="color: #f2f2f2;"
+                                class=" d-flex justify-content-between BgColor align-items-center  p-2 ">
+                                <h5 class="m-0 textBlueColor">Category</h5>
+                                <svg xmlns="http://www.w3.org/2000/svg" data-bs-toggle="modal"
+                                    data-bs-target="#AddCategory" width="20" height="20" fill="currentColor"
+                                    class="bi bi-plus-square textBlueColor " viewBox="0 0 16 16">
+                                    <path
+                                        d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" />
+                                    <path
+                                        d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                                </svg>
+                            </div>
+                            <div style="max-height: 400px; overflow-y: scroll;" class="list-group BgColor   mt-2">
+                                @for (int i = 0; i < Model.CategoryList.Count; i++)
+                                {
+                                
+
+                                    <button type="button" data-id="@Model.CategoryList[i].CategoryId"
+                                        class="list-group-item list-group-item-action BgColor border-0 d-flex justify-content-between align-items-center cId"
+                                        aria-current="true">
+                                        <div class=" d-flex border-0 d-flex  justify-content-start align-items-center">
+                                            <img height="20" width="20" src="~/images/6_dotss.webp" alt="">
+                                            <h5 class="m-2 ">@Model.CategoryList[i].CategoryName</h5>
+                                        </div>
+                                        <div
+                                            class="action-buttons d-flex gap-3 justify-content-center align-items-center pt-2">
+                                            <a class="link-secondary"><img src="~/images/icons/pen.svg"  height="24"
+                                                    width="24" class="edit-btn" data-id="@Model.CategoryList[i].CategoryId"
+                                                    data-bs-toggle="modal" data-bs-target="#EditCategory"></a>
+                                            <img src="~/images/icons8-delete-80.png" height="24" width="24"
+                                                class="fa-regular fa-trash-can" data-id="@Model.CategoryList[i].CategoryId"
+                                                onclick="setDeleteUserId(this)" data-bs-toggle="modal"
+                                                data-bs-target="#Delete">
+                                        </div>
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                        <div style="min-height: 500px;" class=" col-sm-12 col-md-9 col-xxl-10">
+                            <div class="row">
+                                <div class="col-md-3 ">
+                                    <h2 class="textBlueColor mt-2 d-md-none"><span data-bs-toggle="offcanvas"
+                                            href="#items">Items</span></h2>
+                                    <h2 class="textBlueColor mt-2 d-none d-md-block">Items</h2>
+                                </div>
+                                <div
+                                    class="col-md-9  d-flex justify-content-md-end justify-content-center align-items-center">
+                                    <div
+                                        class="d-flex justify-content-between justify-content-md-end  align-items-center gap-2 w-100">
+                                        <div class="position-relative">
+                                            <input class="inputs rounded-1 border-1 " type="text" name="" id="searchFun"
+                                                placeholder=" Search">
+                                            <i
+                                                class="fa-solid fa-magnifying-glass position-absolute searchFunctionality"></i>
+                                        </div>
+                                        <div class=" d-flex  gap-2">
+                                            <button type="button" class="btn border" id="deleteSelectedItems"><img  src="~/images/icons8-delete-80.png" height="24" width="24"
+                                                    class="fa-regular fa-trash-can"></button>
+                                            <button type="button" data-bs-toggle="modal" data-bs-target="#AddItems"
+                                                class="btn btn-primary d-none d-md-block">+ New
+                                                Item</button>
+                                            <button type="button" data-bs-toggle="modal" data-bs-target="#AddItems"
+                                                class="btn btn-primary d-md-none "><i class="fa-solid fa-plus"
+                                                    style="color: #ffffff;"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" id="itemsContainer">
+                                @* partial for items will be added here *@
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade  " id="Modifier" role="tabpanel" aria-labelledby="profile-tab">
+                    @* repeated *@
+                    <div class="row">
+                        <div class="col-8  BgColor col-sm-5 col-xxl-2 border-end  borderSide  d-md-block p-0">
+                            <div style="color: #f2f2f2;"
+                                class=" d-flex justify-content-between BgColor align-items-center  p-2 ">
+                                <h5 class="m-0 textBlueColor">Modifiers</h5>
+                                <svg xmlns="http://www.w3.org/2000/svg" id="addMGroup" data-mode="add"
+                                    data-bs-toggle="modal" data-bs-target="#AddModifiersGroup" width="20" height="20"
+                                    fill="currentColor" class="bi bi-plus-square textBlueColor " viewBox="0 0 16 16">
+                                    <path
+                                        d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" />
+                                    <path
+                                        d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                                </svg>
+                            </div>
+                            <div style="max-height: 400px; overflow-y: scroll;" class="list-group BgColor mt-2">
+                                @for (int i = 0; i < Model.ModifiersList.Count; i++)
+                                {
+                                    <button type="button" data-id="@Model.ModifiersList[i].ModifierGroupId"
+                                        class="list-group-item list-group-item-action BgColor  border-0 d-flex justify-content-between align-items-center mId  currentModifierId"
+                                        aria-current="true">
+                                        <div class=" d-flex border-0 d-flex justify-content-start align-items-center">
+                                            <img src="~/images/6_dotss.webp" height="20" width="20" class="fa-solid fa-grip-vertical " style="color: #989a9c;">
+                                            <h5 class="m-2 ">@Model.ModifiersList[i].ModifierGroupName</h5>
+                                        </div>
+                                        <div
+                                            class="action-buttons d-flex gap-3 justify-content-center align-items-center pt-2">
+                                            <a class="link-secondary"><img src="~/images/icons/pen.svg" height="20" width="20"  class="fa-solid fa-pencil edit-btn-modifier"
+                                                    data-id="@Model.ModifiersList[i].ModifierGroupId" data-mode="edit"
+                                                    data-bs-toggle="modal" data-bs-target="#EditModifiersGroup"></a>
+                                            <img src="~/images/icons8-delete-80.png" height="20" width="20" class="delete-modifierGroup"
+                                                data-id="@Model.ModifiersList[i].ModifierGroupId" data-bs-toggle="modal"
+                                                data-bs-target="#Delete">
+                                        </div>
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                        <div style="min-height: 500px;" class=" col-md-9 col-xxl-10">
+                            <div class="row">
+                                <div class="col-md-3 ">
+                                    <h2 class="textBlueColor mt-2 d-md-none"><span data-bs-toggle="offcanvas"
+                                            href="#items">Modifiers</span></h2>
+                                    <h2 class="textBlueColor mt-2 d-none d-md-block">Modifiers</h2>
+                                </div>
+                                <div
+                                    class="col-md-9  d-flex justify-content-md-end justify-content-center align-items-center">
+                                    <div
+                                        class="d-flex justify-content-between justify-content-md-end  align-items-center gap-2 w-100">
+                                        <div class="position-relative">
+                                            <input class="inputs rounded-1 border-1 " type="text" name="" id="searchFun"
+                                                placeholder=" Search">
+                                            <i
+                                                class="fa-solid fa-magnifying-glass position-absolute searchFunctionality"></i>
+                                        </div>
+                                        <div class=" d-flex  gap-2">
+                                            <button type="button" id="deleteSelectedModifiersItems"
+                                                class="btn border"><img  src="~/images/icons8-delete-80.png" height="24" width="24" class="fa-regular fa-trash-can"></button>
+                                            <button type="button" data-bs-toggle="modal"
+                                                data-bs-target="#AddModifierItems"
+                                                class="btn btn-primary d-none d-md-block">+ New
+                                                Modifier</button>
+                                            <button type="button" data-bs-toggle="modal"
+                                                data-bs-target="#AddModifierItems" class="btn btn-primary d-md-none "><i
+                                                    class="fa-solid fa-plus" style="color: #ffffff;"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" id="modifiersItemsContainer">
+                                @* partial view will be added here for modifiers items *@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal for add category -->
+<div class="modal fade " id="AddCategory" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class=" modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-secondary">Add Category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" asp-action="AddCategory" asp-controller="SuperAdmin">
+                <div class="modal-body">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" asp-for="AddCategoryViewModel.CategoryName"
+                            placeholder="">
+                        <label for="CategoryDescription">Name*</label>
+                        <span asp-validation-for="AddCategoryViewModel.CategoryName" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" asp-for="AddCategoryViewModel.CategoryDescription"
+                            placeholder="">
+                        <label for="CategoryDescription">Description</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@* edit category *@
+<div class="modal fade " id="EditCategory" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class=" modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-secondary">Edit Category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" asp-action="EditCategoryPost" asp-controller="SuperAdmin">
+                <div class="modal-body">
+                    <div class="form-floating mb-3">
+                        <input type="hidden" asp-for="AddCategoryViewModel.CategoryId" id="currentId">
+                        <input type="text" class="form-control" id="categoryName"
+                            asp-for="AddCategoryViewModel.CategoryName">
+                        <label for="CategoryDescription">Name*</label>
+                        <span asp-validation-for="AddCategoryViewModel.CategoryName" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="categoryDescription"
+                            asp-for="AddCategoryViewModel.CategoryDescription">
+                        <label for="CategoryDescription">Description</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- offcanvas for items -->
+<div class="offcanvas offCanvasToggle offcanvas-start mw-50 d-md-none" tabindex="-1" id="items"
+    aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div class=" d-flex justify-content-between align-items-center  p-2 ">
+            <h2 class="m-0 textBlueColor">Category</h2>
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                class="bi bi-plus-square textBlueColor" data-bs-toggle="modal" data-bs-target="#AddCategory"
+                viewBox="0 0 16 16">
+                <path
+                    d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" />
+                <path
+                    d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+            </svg>
+        </div>
+        <div class="list-group  mt-2">
+            @for (int i = 0; i < Model.CategoryList.Count; i++)
+            {
+                <button type="button"
+                    class="list-group-item list-group-item-action   border-0 d-flex justify-content-between align-items-center"
+                    aria-current="true" data-bs-dismiss="offcanvas">
+                    <div class=" d-flex border-0 d-flex justify-content-start align-items-center">
+                        <i class="fa-solid fa-grip-vertical textBlueColor" style="color: #989a9c;"></i>
+                        <h5 class="m-2 textBlueColor">@Model.CategoryList[i].CategoryName</h5>
+                    </div>
+                    <div class="action-buttons d-flex gap-3 justify-content-center align-items-center pt-2">
+                        <a class="link-secondary"><i class="fa-solid fa-pencil edit-btn"
+                                data-id="@Model.CategoryList[i].CategoryId" data-bs-toggle="modal"
+                                data-bs-target="#EditCategory"></i></a>
+                        <i class="fa-regular fa-trash-can" data-id="@Model.CategoryList[i].CategoryId"
+                            onclick="setDeleteUserId(this)" data-bs-toggle="modal" data-bs-target="#Delete"></i>
+                    </div>
+                </button>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- modal for delete -->
+<div class="modal fade" id="Delete" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class=" modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Confirmation </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-flex flex-column align-items-center justify-content-center">
+                <img width="50" src="~/images/toppng.com-warning-icon-2400x2400.png" alt="">
+                <p> Are you sure you want to delete this items?</p>
+                <div class="actionButtons">
+                    <a id="deleteUserBtn"><button type="button" class="btn btn-primary ">Yes</button></a>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* modal for add items *@
+<div class="modal fade" id="AddItems" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl  modal-dialog-centered">
+        <div class="modal-content">
+            <div class="m-3 text-secondary">
+                @* <h3 class="m-2 mb-4">Add New Menu Item</h3> *@
+                <div class="modal-header">
+                    <h5 class="modal-title text-secondary">Add New Menu Item</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="addItems" method="post" enctype="multipart/form-data">
+                    <div class="row  m-2">
+                        <div class="col-lg-8">
+                            <div class="row gy-3">
+                                <div class="col-lg-6">
+                                    <div class="form-floating">
+                                        <select class="form-select" id="addItemCategoryId"
+                                            asp-for="AddItemsViewModel.CategoryId">
+                                            <option value="">Select Category</option>
+                                            @for (int i = 0; i < Model.CategoryList.Count; i++)
+                                            {
+                                                <option value="@Model.CategoryList[i].CategoryId">
+                                                    @Model.CategoryList[i].CategoryName</option>
+                                            }
+                                        </select>
+                                        <label for="floatingSelect">Categories*</label>
+                                        <span asp-validation-for="AddItemsViewModel.CategoryId"
+                                            class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" id="addItemName" asp-for="AddItemsViewModel.ItemName"
+                                            class="form-control" placeholder="Name*">
+                                        <label>Name*</label>
+                                        <span asp-validation-for="AddItemsViewModel.ItemName"
+                                            class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row gy-3 mb-lg-3">
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="form-floating">
+                                        <select asp-for="AddItemsViewModel.ItemType" id="addItemType"
+                                            class="form-select">
+                                            <option value="">Select a type</option>
+                                            
+                                            <option value="2">Non-veg</option>
+                                            <option value="1">Veg</option>
+                                        </select>
+                                        <label for="floatingSelect">Item Type*</label>
+                                        <span asp-validation-for="AddItemsViewModel.ItemType"
+                                            class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="form-floating ">
+                                        <input type="text" id="addItemRate" asp-for="AddItemsViewModel.Rate"
+                                            class="form-control" placeholder="Rate*">
+                                        <label>Rate*</label>
+                                        <span asp-validation-for="AddItemsViewModel.Rate" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="form-floating ">
+                                        <input type="text" id="addItemQuantity" asp-for="AddItemsViewModel.Quantity"
+                                            class="form-control" placeholder="Quantity*">
+                                        <label>Quantity*</label>
+                                        <span asp-validation-for="AddItemsViewModel.Quantity"
+                                            class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="form-floating">
+                                        <select asp-for="AddItemsViewModel.Unit" class="form-select" id="addItemUnit"
+                                            aria-label="Floating label select example">
+                                            <option value="">select a unit</option>
+                                            @for (int i = 0; i < Model.Units.Count; i++)
+                                            {
+                                                <option value="@Model.Units[i].Value">@Model.Units[i].Text</option>
+                                            }
+                                        </select>
+                                        </select>
+                                        <label for="floatingSelect">Units*</label>
+                                        <span asp-validation-for="AddItemsViewModel.Unit" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row gy-3 justify-content-center">
+                                <div class="col-xl-6 d-flex  justify-content-evenly p-2">
+                                    <div class="">
+                                        <div
+                                            class="form-check form-switch mt-1  d-flex  justify-content-center align-items-center">
+                                            <input class="form-check-input tgl" id="addItemIsAvailable"
+                                                asp-for="AddItemsViewModel.IsAvailable" type="checkbox"
+                                                id="flexSwitchCheckChecked">
+                                            <p class="m-0 ms-2">Available</p>
+                                            <span asp-validation-for="AddItemsViewModel.IsAvailable"
+                                                class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class=" ">
+                                        <div
+                                            class="form-check form-switch  mt-1  d-flex justify-content-center align-items-center">
+                                            <input class="form-check-input tgl" id="addItemDefualt"
+                                                asp-for="AddItemsViewModel.DefaultTax" type="checkbox"
+                                                id="flexSwitchCheckChecked">
+                                            <p class="m-0 ms-1">Default Tax</p>
+                                            <span asp-validation-for="AddItemsViewModel.DefaultTax"
+                                                class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-md-6">
+                                    <div class="form-floating ">
+                                        <input type="text" class="form-control" id="addItemTaxPercentage"
+                                            asp-for="AddItemsViewModel.TaxPercentage" placeholder="Rate*">
+                                        <label>Tax Percentage*</label>
+                                        <span asp-validation-for="AddItemsViewModel.TaxPercentage"
+                                            class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="addItemShortCode"
+                                            asp-for="AddItemsViewModel.ShortCode" placeholder="Rate*">
+                                        <label>short Code</label>
+                                        <span asp-validation-for="AddItemsViewModel.ShortCode"
+                                            class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-floating border-1">
+                                <textarea class="form-control" id="addItemDescription"
+                                    asp-for="AddItemsViewModel.Description" placeholder="Leave a comment here"
+                                    style="height: 100px"></textarea>
+                                <label for="floatingTextarea2">Description</label>
+                                <span asp-validation-for="AddItemsViewModel.Description" class="text-danger"></span>
+                            </div>
+                            <div class="form-control mt-2">
+                            <p class="">Upload Image</p>
+                            <div
+                                class=" position-relative  d-flex flex-column justify-content-center align-items-center">
+                                <input asp-for="AddItemsViewModel.ImageUpload" type="file"
+                                    class="border w-100 h-100 border-secondary position-absolute opacity-0">
+                                <button type="button"
+                                    class="btn btn-outline-secondary d-flex justify-content-center align-items-center border-0 dashed w-100 p-5"><i
+                                        class="fa-solid fa-cloud-arrow-up"></i>
+                                    <p class="my-0 mx-2">Drag and Drop or Browse File</p>
+                                    <span asp-validation-for="AddItemsViewModel.ImageUpload" class="text-danger"></span>
+                                </button>
+                            </div>
+                            </div>
+                        </div>
+                        <div style="max-height: 485px; overflow-y: auto;"
+                            class="col-lg-4 border rounded p-2 modifierColor">
+                            <div class="dropdown w-100">
+                                <div style="background-color: white;"
+                                    class="btn dropdown-toggle w-100 d-flex justify-content-between align-items-center"
+                                    type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Select Modifier Group(s)
+                                </div>
+                                <div id="selectedModifierGroupForItem"
+                                    class="d-flex bg-white gap-1 w-100 flex-wrap p-2 ">
+                                    @* selected modifiers group will be added here *@
+                                </div>
+                                <ul class="dropdown-menu p-3" style="max-height: 200px; overflow-y: auto; "
+                                    aria-labelledby="dropdownMenuButton">
+                                    @foreach (var item in Model.ModifiersList)
+                                    {
+                                        <li><input type="checkbox" class="ModifierGroup-checkbox"
+                                                value="@item.ModifierGroupId">
+                                            <label class="form-check-label">@item.ModifierGroupName</label>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                            <div id="ajaxResponseOfModifierList" class="d-flex flex-column gap-2 my-2">
+                                @* ajax reponse will be shown here *@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end gap-2">
+                        <button type="submit" id="saveblock" class="btn btn-primary"  >Save</button>
+                        <button type="button" data-bs-dismiss="modal" class="btn btn-outline-secondary ">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* modal for edit items*@
+<div class="modal fade" id="editItems" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-xl  modal-dialog-centered">
+        <div class="modal-content">
+            <div class="m-3 text-secondary">
+                @* <h3 class="m-2 mb-4">Update Menu Item</h3> *@
+                <div class="modal-header">
+                    <h5 class="modal-title text-secondary">Update Menu Item</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="editItemsForm" method="post" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="EditItemsViewModel.ItemId" id="editItemId" asp>
+                    <div class="row  m-2">
+                        <div class="col-lg-8">
+                            <div class="row gy-3">
+                                <div class="col-lg-6">
+                                    <div class="form-floating">
+                                        <select class="form-select" id="editItemCategoryId"
+                                            asp-for="EditItemsViewModel.CategoryId">
+                                            <option value="">Select Category</option>
+                                            @for (int i = 0; i < Model.CategoryList.Count; i++)
+                                            {
+                                                <option value="@Model.CategoryList[i].CategoryId">
+                                                    @Model.CategoryList[i].CategoryName</option>
+                                            }
+                                        </select>
+                                        <label for="floatingSelect">Categories*</label>
+                                        <span asp-validation-for="EditItemsViewModel.CategoryId"
+                                            class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" id="editItemName" asp-for="EditItemsViewModel.ItemName"
+                                            class="form-control" placeholder="Name*">
+                                        <label>Name*</label>
+                                        <span asp-validation-for="EditItemsViewModel.ItemName"
+                                            class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row gy-3 mb-lg-3">
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="form-floating">
+                                        <select asp-for="EditItemsViewModel.ItemType" id="editItemType"
+                                            class="form-select">
+                                            <option value="">Select a type</option>
+                                            <option value="1">Veg</option>
+                                            <option value="2">Non-veg</option>
+                                        </select>
+                                        <label for="editItemType">Item Type*</label>
+                                        <span asp-validation-for="EditItemsViewModel.ItemType"
+                                            class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="form-floating ">
+                                        <input type="text" id="editItemRate" asp-for="EditItemsViewModel.Rate"
+                                            class="form-control" placeholder="Rate*">
+                                        <label>Rate*</label>
+                                        <span asp-validation-for="EditItemsViewModel.Rate" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="form-floating ">
+                                        <input type="text" id="editItemQuantity" asp-for="EditItemsViewModel.Quantity"
+                                            class="form-control" placeholder="Quantity*">
+                                        <label>Quantity*</label>
+                                        <span asp-validation-for="EditItemsViewModel.Quantity"
+                                            class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="form-floating">
+                                        <select asp-for="EditItemsViewModel.Unit" class="form-select" id="editItemUnit"
+                                            aria-label="Floating label select example">
+                                            <option value="">select a unit</option>
+                                            @for (int i = 0; i < Model.Units.Count; i++)
+                                            {
+                                                <option value="@Model.Units[i].Value">@Model.Units[i].Text</option>
+                                            }
+                                        </select>
+                                        </select>
+                                        <label for="floatingSelect">Units*</label>
+                                        <span asp-validation-for="EditItemsViewModel.Unit" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row gy-3 justify-content-center">
+                                <div class="col-xl-6 d-flex  justify-content-evenly p-2">
+                                    <div class="">
+                                        <div
+                                            class="form-check form-switch mt-1  d-flex  justify-content-center align-items-center">
+                                            <input class="form-check-input tgl" id="editItemIsAvailable"
+                                                asp-for="EditItemsViewModel.IsAvailable" type="checkbox">
+                                            <p class="m-0 ms-2">Available</p>
+                                            <span asp-validation-for="EditItemsViewModel.IsAvailable"
+                                                class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class=" ">
+                                        <div
+                                            class="form-check form-switch  mt-1  d-flex justify-content-center align-items-center">
+                                            <input class="form-check-input tgl" id="editItemDefualt"
+                                                asp-for="EditItemsViewModel.DefaultTax" type="checkbox">
+                                            <p class="m-0 ms-1">Default Tax</p>
+                                            <span asp-validation-for="EditItemsViewModel.DefaultTax"
+                                                class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-md-6">
+                                    <div class="form-floating ">
+                                        <input type="text" class="form-control" id="editItemTaxPercentage"
+                                            asp-for="EditItemsViewModel.TaxPercentage" placeholder="Tax Percentage*">
+                                        <label>Tax Percentage*</label>
+                                        <span asp-validation-for="EditItemsViewModel.TaxPercentage"
+                                            class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="editItemShortCode"
+                                            asp-for="EditItemsViewModel.ShortCode" placeholder="Rate*">
+                                        <label>short Code</label>
+                                        <span asp-validation-for="EditItemsViewModel.ShortCode"
+                                            class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-floating">
+                                <textarea class="form-control" id="editItemDescription"
+                                    asp-for="EditItemsViewModel.Description" placeholder="Leave a comment here"
+                                    style="height: 100px"></textarea>
+                                <label for="floatingTextarea2">Description</label>
+                                <span asp-validation-for="EditItemsViewModel.Description" class="text-danger"></span>
+                            </div>
+                            <p class="m-2">Upload Image</p>
+                            <div
+                                class=" position-relative  d-flex flex-column justify-content-center align-items-center">
+                                <input asp-for="EditItemsViewModel.ImageUpload" type="file"
+                                    class="border w-100 h-100 border-secondary position-absolute opacity-0">
+                                <button type="button"
+                                    class="btn btn-outline-secondary d-flex justify-content-center align-items-center border-0 dashed w-100 p-5"><i
+                                        class="fa-solid fa-cloud-arrow-up"></i>
+                                    <p class="my-0 mx-2">Drag and Drop or Browse File</p>
+                                    <span asp-validation-for="EditItemsViewModel.ImageUpload"
+                                        class="text-danger"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <div style="max-height: 485px; overflow-y: auto;"
+                            class="col-lg-4 border rounded p-2 modifierColor">
+                            <div class="dropdown w-100">
+                                <div style="background-color: white;"
+                                    class="btn dropdown-toggle w-100 d-flex justify-content-between align-items-center"
+                                    type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Select Modifier Group(s)
+                                </div>
+                                <div id="selectedModifierGroupForItem"
+                                    class="d-flex bg-white gap-1 w-100 flex-wrap p-2 ">
+                                    @* selected modifiers group will be added here *@
+                                </div>
+                                <ul class="dropdown-menu p-3" style="max-height: 200px; overflow-y: auto; "
+                                    aria-labelledby="dropdownMenuButton">
+                                    @foreach (var item in Model.ModifiersList)
+                                    {
+                                        <li><input type="checkbox" class="edit-ModifierGroup-checkbox"
+                                                value="@item.ModifierGroupId">
+                                            <label class="form-check-label">@item.ModifierGroupName</label>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                            <div id="edit-ajaxResponseOfModifierList" class="d-flex flex-column gap-2 my-2">
+                                @* ajax reponse will be shown here *@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end gap-2">
+                        <button type="submit" id="editItemSubmit" class="btn btn-primary">Save</button>
+                        <button type="button" data-bs-dismiss="modal" class="btn btn-outline-secondary ">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@* modal for add ModifierGroup *@
+<div class="modal fade " id="AddModifiersGroup" data-bs-backdrop="static" tabindex="-1"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-secondary">Add Modifiers Group</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" id="addModifierGroupForm">
+                <input type="hidden" id="selectedModifiers" asp-for="AddModifiers.ModifierItemIds" />
+
+                <div class="modal-body">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" asp-for="AddModifiers.ModifierGroupName"
+                            placeholder="Name*">
+                        <label for="floatingInput">Name*</label>
+                        <span asp-validation-for="AddModifiers.ModifierGroupName" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" asp-for="AddModifiers.Description"
+                            placeholder="Description">
+                        <label for="Description">Description</label>
+                    </div>
+                    <a style="text-decoration: none; cursor: pointer;" data-mode="add"
+                        data-bs-target="#SelectExistingModal" data-bs-toggle="modal" data-bs-dismiss="modal"
+                        class="textBlueColor border-0">+ Add Existing
+                        Modifiers</a>
+                    <div id="existingModifiersForAdd" class="d-flex gap-2 m-1 align-items-center flex-wrap">
+                        @* existing modifier will be added here *@
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button id="addModifierGroupBtn" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-outline-secondary emptytheModal"
+                        data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@* modal for edit modifier group *@
+<div class="modal fade" id="EditModifiersGroup" data-bs-backdrop="static" tabindex="-1"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-secondary">Update Modifiers Group</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" id="editModifierGroupForm">
+                <input type="hidden" id="edit-selectedModifiers" asp-for="AddModifiers.ModifierGroupId" />
+                <div class="modal-body">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="editModifierGroupName"
+                            asp-for="AddModifiers.ModifierGroupName" placeholder="Name*">
+                        <label for="floatingInput">Name*</label>
+                        <span asp-validation-for="AddModifiers.ModifierGroupName" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="editModifierGroupDescription"
+                            asp-for="AddModifiers.Description" placeholder="Description">
+                        <label for="Description">Description</label>
+                    </div>
+                    <a style="text-decoration: none; cursor: pointer;" id="edit-existingModifiers" data-mode="edit"
+                        data-bs-target="#SelectExistingModal" data-bs-toggle="modal" data-bs-dismiss="modal"
+                        class="textBlueColor border-0">+ Add Existing
+                        Modifiers</a>
+                    <div id="existingModifiersForEdit" class="d-flex gap-2 m-1 align-items-center flex-wrap ">
+                        @* existing modifier will be added here *@
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button id="editModifierGroupBtn" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-outline-secondary emptytheModal"
+                        data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@* modal for existing items *@
+<!-- Modal -->
+<div class="modal fade" id="SelectExistingModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"  aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content  ">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Select Existing Modifier</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="position-relative m-2">
+                <input class="inputs rounded-1 border-1 w-50" id="SelectExistingModifierSearch" type="text"
+                    placeholder=" Search">
+                <i class="fa-solid fa-magnifying-glass position-absolute SelectExistingModifiersSearch"></i>
+            </div>
+            <div class="modal-body" id="SelectExistingModifiers">
+            </div>
+            <div class="modal-footer justify-content-start">
+                <button type="button" id="addExistingModifier" data-bs-dismiss="modal"
+                    class="btn btn-primary">Add</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+@* modal for adding modifiers items *@
+<div class="modal fade" id="AddModifierItems" data-bs-backdrop="static" tabindex="-1"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add New Modifier</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" id="AddModifierItemForm">
+                <div class="modal-body">
+                    <div class="row gy-3 mb-3">
+                        <div class="col-md-6">
+                            <div class="dropdown w-100 h-100 border">
+                                <div class="btn dropdown-toggle w-100 d-flex justify-content-between align-items-center "
+                                    type="button" data-bs-toggle="dropdown">
+                                    Select Modifier Option(s)
+                                </div>
+                                <div id="selectedItemsContainer" class="d-flex  flex-wrap p-2 ">
+                                    <!-- Selected items will be displayed here -->
+                                </div>
+
+                                <ul class="dropdown-menu p-2" style="max-height: 200px; overflow-y: auto; "
+                                    aria-labelledby="multiSelectDropdown">
+                                    @foreach (var option in Model.ModifiersList)
+                                    {
+                                        <li>
+                                            <input type="checkbox" class="form-check-input multi-select-checkbox"
+                                                value="@option.ModifierGroupId" id="chk_@option.ModifierGroupId">
+                                            <label class="form-check-label"
+                                                for="chk_@option.ModifierGroupId">@option.ModifierGroupName</label>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" asp-for="AddModifierItemViewModel.ModifierItemName"
+                                    class="form-control" placeholder="Name*">
+                                <label>Name*</label>
+                                <span asp-validation-for="AddModifierItemViewModel.ModifierItemName"
+                                    class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row gy-3">
+                        <div class="col-md-4">
+                            <div class="form-floating ">
+                                <input type="text" asp-for="AddModifierItemViewModel.Rate" class="form-control"
+                                    placeholder="Rate*">
+                                <label>Rate*</label>
+                                <span asp-validation-for="AddModifierItemViewModel.Rate" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating ">
+                                <input type="text" asp-for="AddModifierItemViewModel.Quantity" class="form-control"
+                                    placeholder="Quantity*">
+                                <label>Quantity*</label>
+                                <span asp-validation-for="AddModifierItemViewModel.Quantity" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating">
+                                <select class="form-select" asp-for="AddModifierItemViewModel.Unit"
+                                    aria-label="Floating label select example">
+                                    <option value="">Select a Unit</option>
+                                    @for (int i = 0; i < Model.Units.Count; i++)
+                                    {
+                                        <option value="@Model.Units[i].Value">@Model.Units[i].Text</option>
+                                    }
+                                </select>
+                                <label for="floatingSelect">Unit*</label>
+                                <span asp-validation-for="AddModifierItemViewModel.Unit" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-floating">
+                            <textarea class="form-control" asp-for="AddModifierItemViewModel.Description"
+                                placeholder=" Description"></textarea>
+                            <label class="ms-2"> Description</label>
+                            <span asp-validation-for="AddModifierItemViewModel.Description" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="AddModifierItembtn" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@* modal for edit modifier item  *@
+<div class="modal fade" id="editModifierItems" data-bs-backdrop="static" tabindex="-1"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update Modifier</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" id="editModifierItemForm">
+                <input type="hidden" id="editModifierItemId" asp-for="AddModifierItemViewModel.ModifierItemId">
+                <div class="modal-body">
+                    <div class="row gy-3 mb-3">
+                        <div class="col-md-6">
+                            <div class="dropdown w-100 h-100 border">
+                                <div class="btn dropdown-toggle w-100 d-flex justify-content-between align-items-center "
+                                    type="button" data-bs-toggle="dropdown">
+                                    Select Modifier Option(s)
+                                </div>
+                                <div id="selectedItemsContainerForEdit" class="d-flex  flex-wrap p-2 ">
+                                    <!-- Selected items will be displayed here -->
+                                </div>
+
+                                <ul class="dropdown-menu p-2" style="max-height: 200px; overflow-y: auto; "
+                                    aria-labelledby="multiSelectDropdown">
+                                    @foreach (var option in Model.ModifiersList)
+                                    {
+                                        <li>
+                                            <input type="checkbox" class="form-check-input multi-select-checkbox-forEdit"
+                                                value="@option.ModifierGroupId" id="forEditchk_@option.ModifierGroupId">
+                                            <label class="form-check-label"
+                                                for="forEditchk_@option.ModifierGroupId">@option.ModifierGroupName</label>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" id="editModifierItemName"
+                                    asp-for="AddModifierItemViewModel.ModifierItemName" class="form-control"
+                                    placeholder="Name*">
+                                <label>Name*</label>
+                                <span asp-validation-for="AddModifierItemViewModel.ModifierItemName"
+                                    class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row gy-3">
+                        <div class="col-md-4">
+                            <div class="form-floating ">
+                                <input type="text" id="editModifierItemRate" asp-for="AddModifierItemViewModel.Rate"
+                                    class="form-control" placeholder="Rate*">
+                                <label>Rate*</label>
+                                <span asp-validation-for="AddModifierItemViewModel.Rate" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating ">
+                                <input type="text" id="editModifierItemQuantity"
+                                    asp-for="AddModifierItemViewModel.Quantity" class="form-control"
+                                    placeholder="Quantity*">
+                                <label>Quantity*</label>
+                                <span asp-validation-for="AddModifierItemViewModel.Quantity" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating">
+                                <select class="form-select" id="editModifierItemUnit"
+                                    asp-for="AddModifierItemViewModel.Unit" aria-label="Floating label select example">
+                                    <option value="">Select a Unit</option>
+                                    @for (int i = 0; i < Model.Units.Count; i++)
+                                    {
+                                        <option value="@Model.Units[i].Value">@Model.Units[i].Text</option>
+                                    }
+                                </select>
+                                <label for="floatingSelect">Unit*</label>
+                                <span asp-validation-for="AddModifierItemViewModel.Unit" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-floating">
+                            <textarea class="form-control" id="editModifierItemDescription"
+                                asp-for="AddModifierItemViewModel.Description" placeholder=" Description"></textarea>
+                            <label class="ms-2"> Description</label>
+                            <span asp-validation-for="AddModifierItemViewModel.Description" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="editModifierItembtn" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/addItems.js"></script>
+    <script src="~/js/editItems.js"></script>
+
+    <script src="~/js/addModifierGroup.js"></script>
+    <script src="~/js/modifierList.js"></script>
+    <script src="~/js/AddModifierItem.js"></script>
+    <script>
+        $(document).ready(function () {
+            let id = 0;
+            $('.edit-btn').on('click', function () {
+                id = $(this).attr("data-id");
+                console.log(id);
+                loadCategory(id);
+            })
+            function loadCategory(id) {
+                $.ajax({
+                    url: '/SuperAdmin/GetCategoryForEdit',
+                    type: 'GET',
+                    data: {
+                        id: id
+                    },
+                    success: function (data) {
+                        if (data) {
+                            $('#EditCategory').modal('show');
+                            $('#categoryName').val(data.categoryName);
+                            $('#categoryDescription').val(data.categoryDescription);
+                            $('#currentId').val(data.categoryId);
+                        } else {
+                            alert("Error: Received data is incomplete.");
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log('AJAX request failed:', error);
+                        alert("Error while fetching the category. Please try again.");
+                    }
+                });
+            }
+
+            $('#AddCategory').on('hidden.bs.modal', function () {
+        // Clear all input fields
+        $(this).find('input[type="text"], textarea').val('');
+        // Clear hidden input fields
+        $(this).find('input[type="hidden"]').val('');
+         });
+
+         $('#EditCategory').on('hidden.bs.modal', function () {
+        // Clear all input fields
+        $(this).find('input[type="text"], textarea').val('');
+        // Clear hidden input fields
+        $(this).find('input[type="hidden"]').val('');
+    });
+
+    $('#AddItems').on('hidden.bs.modal', function () {
+        // Clear all input fields
+        $(this).find('input[type="text"], textarea').val('');
+        // Clear hidden input fields
+        $(this).find('input[type="hidden"]').val('');
+    });
+
+    $('#AddItems').on('show.bs.modal', function () {
+    // Clear all input fields
+    $(this).find('input[type="text"], textarea, input[type="hidden"]').val('');
+    // Reset checkboxes and selects
+    $(this).find('input[type="checkbox"], select').prop('checked', false).prop('selected', false);
+  });
+
+    $('#editItems').on('hidden.bs.modal', function () {
+        // Clear all input fields
+        $(this).find('input[type="text"], textarea').val('');
+        // Clear hidden input fields
+        $(this).find('input[type="hidden"]').val('');
+    });
+
+    $('#AddModifiersGroup').on('hidden.bs.modal', function () {
+        // Clear all input fields
+        $(this).find('input[type="text"], textarea').val('');
+        // Clear hidden input fields
+        $(this).find('input[type="hidden"]').val('');
+    });
+
+    $('#EditModifiersGroup').on('hidden.bs.modal', function () {
+        // Clear all input fields
+        $(this).find('input[type="text"], textarea').val('');
+        // Clear hidden input fields
+        $(this).find('input[type="hidden"]').val('');
+    });
+
+    @* $('#SelectExistingModal').on('hidden.bs.modal', function () {
+        // Clear all input fields
+        $(this).find('input[type="text"], textarea').val('');
+        // Clear hidden input fields
+        $(this).find('input[type="hidden"]').val('');
+    }); *@
+
+    $('#AddModifierItems').on('hidden.bs.modal', function () {
+        // Clear all input fields
+        $(this).find('input[type="text"], textarea').val('');
+        // Clear hidden input fields
+        $(this).find('input[type="hidden"]').val('');
+    });
+
+    $('#editModifierItems').on('hidden.bs.modal', function () {
+        // Clear all input fields
+        $(this).find('input[type="text"], textarea').val('');
+        // Clear hidden input fields
+        $(this).find('input[type="hidden"]').val('');
+    });
+        })
+    </script>
+    <Script>
+        function setDeleteUserId(element) {
+            var id = element.getAttribute("data-id");
+            console.log(id);
+            var deleteBtn = document.getElementById("deleteUserBtn");
+            deleteBtn.href = '@Url.Action("DeleteCategory", "SuperAdmin")' + '?id=' + id;
+            console.log(deleteBtn)
+        }
+    </Script>
+    <script>
+        $(document).ready(function () {
+            let pageSize = $("#items").val();
+            let pageNumber = 1;
+            let categoryId;
+            GetcId();
+            function GetcId() {
+                categoryId = $('.cId').first().attr('data-id');
+                 @* $(".cId").addClass("textBlueColor"); *@
+                 $('.cId').first().addClass("textBlueColor"); 
+                $('.mId').first().addClass("textBlueColor"); 
+            }
+            let searchFilter = $('#searchFun').val();
+            loadItems();
+            $('.cId').on('click', function () {
+                categoryId = $(this).attr('data-id');
+                console.log(categoryId)
+                pageNumber = 1;
+                loadItems();
+            })
+            $(document).on('keyup', '#searchFun', function () {
+                searchFilter = $(this).val();
+                console.log("Key pressed: ", $(this).val());
+                console.log("Search Filter:", searchFilter);
+                pageNumber = 1;
+                loadItems();
+            });
+            $(document).on('change', '#PageSize', function () {
+                pageSize = $(this).val();
+                pageNumber = 1;
+                console.log(pageSize);
+                loadItems();
+            });
+            $(document).on('click', '#next', function () {
+                pageNumber = pageNumber + 1;
+                loadItems();
+            });
+            $(document).on('click', '#previous', function () {
+                pageNumber = pageNumber - 1;
+                loadItems();
+            });
+            function loadItems() {
+                $.ajax({
+                    url: "/SuperAdmin/ItemsListPartialView",
+                    type: 'GET',
+                    data: {
+                        pageSize: pageSize,
+                        CurrentPage: pageNumber,
+                        searchFilter: searchFilter,
+                        CategoryId: categoryId
+                    },
+                    success: function (data) {
+                        $('#itemsContainer').html(data);
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("error occured", error)
+                    }
+                })
+            }
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $(document).on('click', '.deleteItem', function () {
+                let deleteId = $(this).attr("data-Delete-itemId")
+                var deleteItem = $('#deleteUserBtn');
+                deleteItem.attr("href", '@Url.Action("DeleteItems", "SuperAdmin")' + '?id=' + deleteId);
+            })
+        })
+    </script>
+    <script>
+        $(document).ready(function () {
+            $(".cId").on("click", function () {
+                $(".cId").removeClass("textBlueColor");
+                $(this).addClass("textBlueColor");
+            });
+
+            $(".mId").on("click", function () {
+                $(".mId").removeClass("textBlueColor");
+                $(this).addClass("textBlueColor");
+            });
+        });
+
+    </script>
+}

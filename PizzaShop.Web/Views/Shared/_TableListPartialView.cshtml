@@ -1,0 +1,94 @@
+@using PizzaShop.Domain.ViewModels;
+@model Pagination<TableViewModel>
+<div style="min-height: 600px;" class="table-responsive bg-white">
+    <table class="table table-section table-responsive">
+        <thead>
+            <tr>
+                <th scope="col">
+                    <div class="form-check">
+                        <input class="form-check-input check allCheck" type="checkbox" id="selectAllTables">
+                        <label class="form-check-label ms-2" for="flexCheckDefault">
+                            Name
+                        </label>
+                </th>
+                @* <th scope="col" class="text-center">Name</th> *@
+                <th scope="col" class="text-center">Capacity</th>
+                <th scope="col" class="text-center">Status</th>
+                <th scope="col" class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Items != null && Model.Items.Count() > 0)
+            {
+                @foreach (var item in Model.Items)
+                {
+                    <tr class="align-self-center">
+                        <td scope="row">
+                            <div class="form-check d-flex align-items-center">
+                                <input class="form-check-input check selectTable" data-tableId="@item.TableId" type="checkbox">
+                                <label class="form-check-label ms-2">
+                                    @* <img width="30" src="~/uploads/@item.Img" alt=""> *@
+                                    @item.TableName
+                                </label>
+                        </td>
+                        @* <td class="text-center"><img width="25" src="~/images/icons/non-veg-icon.svg" alt=""></td> *@
+                        <td class="text-center">@item.Capacity</td>
+                        <td class="text-center text-dark">
+                            <span
+                                class=" btn rounded-pill text-center px-3 py-1 text-white bg-secondary statusActive fw-bold">@item.Newstatus
+                            </span>
+
+                        </td>
+                        @* <td class="text-center">
+                <div class="form-check form-switch h-100 d-flex justify-content-center">
+                <input class="form-check-input tgl" type="checkbox" @(item.IsAvailable==true?"checked":"") disabled>
+                </div>
+                </td> *@
+                        <td class="text-center">
+                            <div class="actionButtons d-flex gap-3 justify-content-center align-items-center pt-2">
+                                <a class="link-secondary"><img src="~/images/icons8-pencil-50.png" alt="" height="24" width="24"
+                                        class=" editTables" data-tableId="@item.TableId" data-SectionId="@item.SectionId"
+                                        data-bs-toggle="modal" data-bs-target="#EditTable">
+
+                                </a>
+                                <img src="~/images/icons8-delete-80.png" alt="delete" height="24" width="24"
+                                    class=" deleteTable" data-bs-toggle="modal" data-Delete-tableId="@item.TableId"
+                                    data-bs-target="#TableDelete">
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+    @if (Model.Items != null && Model.Items.Count() < 1)
+    {
+        <div class=" text-center">No Items found.</div>
+    }
+
+</div>
+<div class="pagination  d-flex flex-column flex-md-row justify-content-end bg-white gap-2  pb-2 mt-2 ">
+    <div class=" d-flex justify-content-center align-items-center gap-3 pe-2">
+        <p class="m-0">Items Per Pages:</p>
+        <select class=" px-2" id="tablePageSize" asp-for="PageSize" name='PageSize'>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="@Model.NumberOfItems">All</option>
+        </select>
+    </div>
+    <div class=" d-flex Pages  justify-content-center align-items-center">
+        <p class="m-0 mx-1">Showing @(Model.NumberOfItems == 0 ? 0 : Model.StartIndex)-
+            @(Model.EndIndex < Model.NumberOfItems ? Model.EndIndex : Model.NumberOfItems) of @Model.NumberOfItems</p>
+
+        <button id="tablePrevious" @(Model.CurrentPage > 1 ? "" : "disabled") type="button"
+            class="btn btn-outline-secondary arrows d-flex justify-content-center align-items-center me-1 p-0"><i
+                class=" m-2">&lt;</i></button>
+        </button>
+
+        <button id="tableNext" @(Model.CurrentPage < Model.TotalPages ? "" : "disabled") type="button"
+            class="btn btn-outline-secondary arrows d-flex justify-content-center align-items-center me-1  p-0"><i
+                class="m-2">&gt;</i></button></button>
+    </div>
+</div>

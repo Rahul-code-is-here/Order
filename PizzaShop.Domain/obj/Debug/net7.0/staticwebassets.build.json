@@ -1,0 +1,46 @@
+{
+  "Version": 1,
+  "Hash": "+a6/mBajYJS2zMQk1x0dLHatTghpspjHLuYAa33uLhg=",
+  "Source": "PizzaShop.Domain",
+  "BasePath": "_content/PizzaShop.Domain",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\rahul\\OneDrive\\Desktop\\PizzaShops-master\\PizzaShop.Domain\\obj\\Debug\\net7.0\\scopedcss\\bundle\\PizzaShop.Domain.styles.css",
+      "SourceId": "PizzaShop.Domain",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\rahul\\OneDrive\\Desktop\\PizzaShops-master\\PizzaShop.Domain\\obj\\Debug\\net7.0\\scopedcss\\bundle\\",
+      "BasePath": "_content/PizzaShop.Domain",
+      "RelativePath": "PizzaShop.Domain.styles.css",
+      "AssetKind": "All",
+      "AssetMode": "CurrentProject",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "ScopedCss",
+      "AssetTraitValue": "ApplicationBundle",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\rahul\\OneDrive\\Desktop\\PizzaShops-master\\PizzaShop.Domain\\obj\\Debug\\net7.0\\scopedcss\\bundle\\PizzaShop.Domain.styles.css"
+    },
+    {
+      "Identity": "C:\\Users\\rahul\\OneDrive\\Desktop\\PizzaShops-master\\PizzaShop.Domain\\obj\\Debug\\net7.0\\scopedcss\\projectbundle\\PizzaShop.Domain.bundle.scp.css",
+      "SourceId": "PizzaShop.Domain",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\rahul\\OneDrive\\Desktop\\PizzaShops-master\\PizzaShop.Domain\\obj\\Debug\\net7.0\\scopedcss\\projectbundle\\",
+      "BasePath": "_content/PizzaShop.Domain",
+      "RelativePath": "PizzaShop.Domain.bundle.scp.css",
+      "AssetKind": "All",
+      "AssetMode": "Reference",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "ScopedCss",
+      "AssetTraitValue": "ProjectBundle",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\rahul\\OneDrive\\Desktop\\PizzaShops-master\\PizzaShop.Domain\\obj\\Debug\\net7.0\\scopedcss\\projectbundle\\PizzaShop.Domain.bundle.scp.css"
+    }
+  ]
+}

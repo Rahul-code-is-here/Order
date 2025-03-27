@@ -1,0 +1,154 @@
+@model PizzaShop.Domain.ViewModels.UpdateProfileModel
+
+<div class="d-flex mt-3 p-3 justify-content-between">
+    <div class="h2 blue-color"><strong>Profile</strong></div>
+</div>
+
+<div class="bg-white user-box ms-4 me-4 p-3 mt-3">
+    <div class="profile-head">
+        <div>
+            <img src="~/images/profile_div_bg.jpg" style="width: 100%; height: 65px;" id="profile-bg" alt="">
+        </div>
+        <div class="avatar d-flex" style="height: 44px;">
+            <img src="~/images/Default_pfp.svg.png" alt=""
+                style="position: relative; top:-30px; height: 90px; left: 18px;">
+            <div class="ps-4 ms-2 mt-1">
+                <h3 class="m-0">@Model.FirstName @Model.LastName</h3>
+                <p>@Model.UserName</p>
+            </div>
+            <div class="ms-auto me-2 mt-3">
+                <p>@Model.Email</p>
+            </div>
+        </div>
+    </div>
+
+    <form asp-controller="Auth" asp-action="UpdateProfile" method="post">
+        <div class="text-center">
+            <div class="row row-cols-2 pt-4 mt-1">
+                <div class="col-lg-6 col-12">
+                    <div class="form-floating mb-3">
+                        <input asp-for="FirstName" class="form-control" required>
+                        <label for="FirstName">First Name</label>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-12">
+                    <div class="form-floating mb-3">
+                        <input asp-for="LastName" class="form-control" required>
+                        <label for="LastName">Last Name</label>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-12">
+                    <div class="form-floating mb-3">
+                        <input asp-for="UserName" class="form-control" required>
+                        <label for="UserName">User Name</label>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-12">
+                    <div class="form-floating mb-3">
+                        <input asp-for="Phone" class="form-control" required>
+                        <label for="Phone">Phone</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-4 col-12 form-floating mb-3">
+                    <select asp-for="CountryID" id="countryDropdown" class="form-select">
+                        <option value="">Select Country</option>
+                        @foreach (var country in Model.Countries)
+                        {
+                            <option value="@country.CountryId" selected="@(country.CountryId == Model.CountryID)">
+                                @country.CountryName
+                            </option>
+                        }
+                    </select>
+                    <label for="CountryID">Country</label>
+
+                </div>
+                <div class="col-lg-4 col-12 form-floating mb-3">
+                    <select asp-for="StateID" id="stateDropdown" class="form-select">
+                        <option value="">Select State</option>
+                        @foreach (var state in Model.States)
+                        {
+                            <option value="@state.StateId" selected="@(state.StateId == Model.StateID)">
+                                @state.StateName
+                            </option>
+                        }
+                    </select>
+                    <label for="StateID">State</label>
+
+                </div>
+                <div class="col-lg-4 col-12 form-floating mb-3">
+                    <select asp-for="CityID" id="cityDropdown" class="form-select">
+                        <option value="">Select City</option>
+                        @foreach (var city in Model.Cities)
+                        {
+                            <option value="@city.CityId" selected="@(city.CityId == Model.CityID)">
+                                @city.CityName
+                            </option>
+                        }
+                    </select>
+                    <label for="CityID">City</label>
+
+                </div>
+                <div class="col-lg-8 col-12 form-floating">
+                    <div class="form-floating mb-3">
+                        <input asp-for="Address" class="form-control">
+                        <label for="Address">Address</label>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-12 form-floating">
+                    <div class="form-floating mb-3">
+                        <input asp-for="Zipcode" class="form-control">
+                        <label for="Zipcode">Zipcode</label>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end gap-2">
+                <button type="submit" class="btn btn-outline-primary">Update</button>
+                <a href="@Url.Action("Dashboard", "Home")" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    document.getElementById("countryDropdown").addEventListener("change", function () {
+        var countryId = this.value;
+        var stateDropdown = document.getElementById("stateDropdown");
+        var cityDropdown = document.getElementById("cityDropdown");
+
+        // Reset state and city dropdowns
+        stateDropdown.innerHTML = '<option value="">Select State</option>';
+        cityDropdown.innerHTML = '<option value="">Select City</option>';
+
+        if (countryId) {
+            fetch(`/Auth/GetStates?countryId=${countryId}`)
+                .then(response => response.json())
+                .then(states => {
+                    states.forEach(state => {
+                        stateDropdown.innerHTML += `<option value="${state.stateId}">${state.stateName}</option>`;
+                    });
+                })
+                .catch(error => console.error('Error fetching states:', error));
+        }
+    });
+
+    document.getElementById("stateDropdown").addEventListener("change", function () {
+        var stateId = this.value;
+        var cityDropdown = document.getElementById("cityDropdown");
+
+        // Reset city dropdown
+        cityDropdown.innerHTML = '<option value="">Select City</option>';
+
+        if (stateId) {
+            fetch(`/Auth/GetCities?stateId=${stateId}`)
+                .then(response => response.json())
+                .then(cities => {
+                    cities.forEach(city => {
+                        cityDropdown.innerHTML += `<option value="${city.cityId}">${city.cityName}</option>`;
+                    });
+                })
+                .catch(error => console.error('Error fetching cities:', error));
+        }
+    });
+</script>

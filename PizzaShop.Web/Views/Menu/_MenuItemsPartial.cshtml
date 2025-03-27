@@ -1,0 +1,28 @@
+
+
+
+<button type="button" id="addExistingModifier" class="btn btn-primary">Add</button>
+
+
+
+
+
+$(document).on("click", "#addExistingModifier", function () {
+    showModifierItems();
+});
+
+function showModifierItems() {
+    debugger
+    selectedContainerForEditModifiergroup.empty();
+    selectedExistingModifierItemForEdit.forEach((item) => {
+        selectedContainerForEditModifiergroup.append(` 
+            <span class='selected-modifierItem badge border rounded-pill bg-white text-secondary px-2' data-ModifierItemId ='${item.itemId}'> 
+                ${item.itemName} 
+                <i class='fa-solid fa-xmark ms-1 removeSelected-modifierItem' data-ModifierItemId='${item.itemId}' style='color: #c2c2c2;'></i> 
+            </span> 
+        `);
+    });
+    console.log(selectedExistingModifierItemForEdit);
+}
+
+

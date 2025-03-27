@@ -1,0 +1,99 @@
+@* @using BussinessLogicLayer.Interface *@
+@using PizzaShop.Domain.ViewModels
+@using PizzaShop.Repository.Interface
+@* @using DataAccessLayer.ViewModels *@
+@model Pagination<OrderViewModel>
+
+
+<div style="min-height: 620px;" class="table-responsive bg-white p-1  ">
+    <table class="table">
+        <thead class="">
+            <tr>
+                <th scope="col" class="text-secondary text-nowrap text-center">#Order <i class="fa-solid fa-arrow-up Orderid"
+                        style="color: #a8a8a8;"></i> <i class="fa-solid fa-arrow-down Orderid"
+                        style="color: #a8a8a8;"></i>
+                </th>
+                <th scope="col" class="text-secondary text-nowrap text-center">Date <i class="fa-solid fa-arrow-up Orderdate"
+                        style="color: #a8a8a8;"></i> <i class="fa-solid fa-arrow-down Orderdate"
+                        style="color: #a8a8a8;"></i>
+                </th>
+                <th scope="col" class="text-secondary text-nowrap text-center">Customer <i
+                        class="fa-solid fa-arrow-up customerName" style="color: #a8a8a8;"></i> <i
+                        class="fa-solid fa-arrow-down customerName" style="color: #a8a8a8;"></i>
+                </th>
+                <th scope="col" class="text-secondary text-center">Status</th>
+                <th scope="col" class="text-secondary text-center">Payment Mode</th>
+                <th scope="col" class="text-secondary text-center">Rating</th>
+                <th scope="col" class="text-secondary text-nowrap text-center">Total Amount <i class="fa-solid fa-arrow-up totalAmount"
+                        style="color: #a8a8a8;"></i> <i class="fa-solid fa-arrow-down totalAmount" style="color: #a8a8a8;"></i>
+                </th>
+                <th scope="col" class="text-secondary text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Items != null && Model.Items.Count() > 0)
+            {
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td class="text-center text-nowrap">@item.OrderId</td>
+                        <td class="text-center  text-nowrap">@item.OrderDate</td>
+                        <td class="text-center  text-nowrap">@item.CustomerName</td>
+                        <td class="text-center  text-nowrap">@item.Orderstatus</td>
+                        <td class="text-center  text-nowrap">@item.PaymentMode</td>
+                        <td class="text-center  text-nowrap">
+                             @for (int i = 0; i < 5; i++)
+                        {
+                            @if (i < item.Rating)
+                            {
+                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                            }
+                            else
+                            {
+                                <i class="fa-regular fa-star" style="color: #FFD43B;"></i>
+                            }
+                        }
+                        </td>
+                        <td class="text-center  text-nowrap">@item.TotalAmount</td>
+                        <td class="text-center  text-nowrap">
+                            <button class="btn">
+                                <i class="fa-regular fa-file-pdf"></i>
+                            </button>
+
+                            <a class="btn" asp-controller="Orders" asp-action="InvoiceView">
+                                <i class="fa-regular fa-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+                </tbody>
+            </table>
+                    @if (Model.Items.Count() < 1)
+                    {
+                <div class=" text-center">No Orders found.</div>
+                    }
+        </div>
+        <div class="pagination  d-flex flex-column flex-md-row justify-content-end bg-white gap-2  pb-2  ">
+            <div class=" d-flex justify-content-center align-items-center gap-3 pe-2">
+                <p class="m-0">Items Per Pages:</p>
+                <select class=" px-2" asp-for="PageSize" name='PageSize'>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="@Model.NumberOfItems">All</option>
+                </select>
+            </div>
+            <div class=" d-flex Pages  justify-content-center align-items-center">
+                <p class="m-0 mx-1">Showing @(Model.NumberOfItems == 0 ? 0 : Model.StartIndex)-
+                                @(Model.EndIndex < Model.NumberOfItems ? Model.EndIndex : Model.NumberOfItems) of @Model.NumberOfItems</p>
+
+                <button id="OrdersPrevious" @(Model.CurrentPage > 1 ? "" : "disabled") type="button"
+                    class="btn btn-outline-secondary arrows d-flex justify-content-center align-items-center me-1 p-0"><i
+                        class="fa-solid fa-angle-left m-2"></i></button>
+
+                <button id="OrdersNext" @(Model.CurrentPage < Model.TotalPages ? "" : "disabled") type="button"
+                    class="btn btn-outline-secondary arrows d-flex justify-content-center align-items-center me-1  p-0"><i
+                        class="fa-solid fa-angle-right m-2"></i></button>
+            </div>
+        </div>

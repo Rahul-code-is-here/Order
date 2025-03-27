@@ -1,0 +1,707 @@
+@* @{
+    ViewData["Title"] = "RolePermissions";
+    var roles = ViewBag.Roles as List<PizzaShop.Domain.ViewModels.RoleViewModel>;
+    var permissions = ViewBag.Permissions as List<PizzaShop.Domain.ViewModels.PermissionViewModel>;
+    var rolePermissions = ViewBag.RolePermissions as List<PizzaShop.Domain.ViewModels.RolePermissionViewModel>;
+}
+
+<div class="col-lg-12 ">
+    <div class="content shadow-lg p-3 mb-5 bg-white rounded mt-3">
+        <div class="d-flex mt-4 justify-content-between align-items-center">
+            <div class="h2 blue-color"><strong>Permission</strong></div>
+            <div class="d-flex align-items-center rightside">
+                <a asp-controller="User" asp-action="UserList"><button type="button"
+                        class="btn btn-outline-primary">Back</button></a>
+            </div>
+        </div>
+
+
+        <div class="table-responsive mt-4">
+            <div class="col-6">
+                <div class="form-floating">
+                    <select class="form-select" id="role" name="role" onchange="loadRolePermissions()">
+                        <option value="">Select Role</option>
+                        @foreach (var role in roles)
+                        {
+                            <option value="@role.Id">@role.Name</option>
+                        }
+                    </select>
+                    <label for="role">Role</label>
+                </div>
+            </div>
+        </div>
+
+
+        <table class="table permissionsTable mt-4" id="permissionsTable">
+      <thead>
+        <tr>
+          <th style="width: 40px;" class="col1"><input type="checkbox" id="selectAllPermissions" class="text-primary"></th>
+          <th>Permission</th>
+          <th>Can View</th>
+          <th>Can Add/Edit</th>
+          <th>Can Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach (var permission in permissions)
+        {
+          <tr data-permission-id="@permission.Id">
+            <td><input type="checkbox" class="selectPermission"></td>
+            <td>@permission.Name</td>
+            <td>
+              <div class="form-check form-switch">
+                <input class="form-check-input can-view" type="checkbox" role="switch" onchange="toggleAddEditDelete(this)">
+              </div>
+            </td>
+            <td>
+              <div class="form-check form-switch">
+                <input class="form-check-input can-add-edit" type="checkbox" role="switch" disabled>
+              </div>
+            </td>
+            <td>
+              <div class="form-check form-switch">
+                <input class="form-check-input can-delete" type="checkbox" role="switch" disabled>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+    </div>
+
+    <!-- buttons -->
+    <div class="d-flex justify-content-end p-2">
+        <button type="button" class="btn navbar-color text-white me-2" onclick="RolePermissions()">Save</button>
+
+        <a asp-controller="Permissions" asp-action="Roles"><button type="submit"
+                class="btn btn-outline-primary ">Cancel</button></a>
+    </div>
+
+    <script>
+    $(document).ready(function () {
+        $('#role').change(function () {
+            loadRolePermissions();
+        });
+
+        $('#selectAllPermissions').change(function () {
+            var isChecked = $(this).prop('checked');
+            $('#permissionsTable tbody input[type="checkbox"]').prop('checked', isChecked);
+            $('#permissionsTable tbody .can-add-edit, #permissionsTable tbody .can-delete').prop('disabled', !isChecked);
+        });
+
+        $('#permissionsTable').on('change', '.selectPermission', function () {
+            var isChecked = $(this).prop('checked');
+            var $row = $(this).closest('tr');
+            $row.find('.form-check-input').prop('checked', isChecked);
+            $row.find('.can-add-edit, .can-delete').prop('disabled', !isChecked);
+        });
+
+        $('#permissionsTable').on('change', '.can-view', function () {
+            var $row = $(this).closest('tr');
+            var canView = $(this).prop('checked');
+            $row.find('.can-add-edit').prop('disabled', !canView).prop('checked', false);
+            $row.find('.can-delete').prop('disabled', true).prop('checked', false);
+        });
+
+        $('#permissionsTable').on('change', '.can-add-edit', function () {
+            var $row = $(this).closest('tr');
+            var canAddEdit = $(this).prop('checked');
+            $row.find('.can-delete').prop('disabled', !canAddEdit).prop('checked', false);
+        });
+
+        applyBootstrapToggles();
+    });
+
+    function loadRolePermissions() {
+        var roleId = $('#role').val();
+        if (!roleId) {
+            $('#permissionsTable tbody').empty();
+            return;
+        }
+
+        $.ajax({
+            url: '/Permission/GetRolePermissions',
+            type: 'GET',
+            data: { roleId: roleId },
+            success: function (data) {
+                $('#permissionsTable tbody').empty();
+                $.each(data, function (index, permission) {
+                    var row = `<tr data-permission-id="${permission.permissionId}">
+                        <td><input type="checkbox" class="selectPermission"></td>
+                        <td>${permission.name}</td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input can-view" type="checkbox" role="switch" ${permission.canView ? 'checked' : ''} onchange="toggleAddEditDelete(this)">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input can-add-edit" type="checkbox" role="switch" ${permission.canAddEdit ? 'checked' : ''} ${!permission.canView ? 'disabled' : ''}>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input can-delete" type="checkbox" role="switch" ${permission.canDelete ? 'checked' : ''} ${!permission.canView || !permission.canAddEdit ? 'disabled' : ''}>
+                            </div>
+                        </td>
+                    </tr>`;
+                    $('#permissionsTable tbody').append(row);
+                });
+                applyBootstrapToggles();
+            },
+            error: function (xhr, status, error) {
+                console.error("Error Fetching Permissions:", error);
+            }
+        });
+    }
+
+    function RolePermissions() {
+        var roleId = $('#role').val();
+        if (!roleId) {
+            alert('Please select a role.');
+            return;
+        }
+
+        var permissions = [];
+        $('#permissionsTable tbody tr').each(function () {
+            var permissionId = $(this).data('permission-id');
+            permissions.push({
+                PermissionId: permissionId,
+                RoleId: parseInt(roleId),
+                CanView: $(this).find('.can-view').prop('checked'),
+                CanAddEdit: $(this).find('.can-add-edit').prop('checked'),
+                CanDelete: $(this).find('.can-delete').prop('checked')
+            });
+        });
+
+        $.ajax({
+            url: '/Permission/SaveRolePermissions',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(permissions),
+            success: function (response) {
+                alert(response.success ? 'Permissions saved successfully!' : 'Failed to save permissions.');
+            },
+            error: function (xhr, status, error) {
+                console.error("Error Saving Permissions:", error);
+            }
+        });
+    }
+
+    function applyBootstrapToggles() {
+        $('.form-check-input').each(function() {
+            $(this).attr('role', 'switch');
+        });
+    }
+
+    function toggleAddEditDelete(viewCheckbox) {
+        var $row = $(viewCheckbox).closest('tr');
+        var canView = $(viewCheckbox).prop('checked');
+        $row.find('.can-add-edit').prop('disabled', !canView).prop('checked', false);
+        $row.find('.can-delete').prop('disabled', true).prop('checked', false);
+    }
+</script>
+
+</div>
+</div> *@
+
+@* @{
+    ViewData["Title"] = "RolePermissions";
+    var roles = ViewBag.Roles as List<PizzaShop.Domain.ViewModels.RoleViewModel>;
+    var permissions = ViewBag.Permissions as List<PizzaShop.Domain.ViewModels.PermissionViewModel>;
+    var rolePermissions = ViewBag.RolePermissions as List<PizzaShop.Domain.ViewModels.RolePermissionViewModel>;
+    var selectedRoleId = ViewBag.SelectedRoleId as int?;
+
+}
+
+<div class="col-lg-12 ">
+    <div class="content shadow-lg p-3 mb-5 bg-white rounded mt-3">
+        <div class="d-flex mt-4 justify-content-between align-items-center">
+            <div class="h2 blue-color"><strong>Permission</strong></div>
+            <div class="d-flex align-items-center rightside">
+                <a asp-controller="User" asp-action="UserList"><button type="button"
+                        class="btn btn-outline-primary">Back</button></a>
+            </div>
+        </div>
+
+
+        <div class="table-responsive mt-4">
+            <div class="col-6">
+                <div class="form-floating">
+                    <select class="form-select" id="role" name="role" onchange="loadRolePermissions()">
+                        <option value="">Select Role</option>
+                        @foreach (var role in roles)
+                        {
+                            <option value="@role.Id">@role.Name</option>
+                        }
+                    </select>
+
+                </div>
+            </div>
+        </div>
+
+
+        <table class="table permissionsTable mt-4" id="permissionsTable">
+            <thead>
+                <tr>
+                    <th style="width: 40px;" class="col1"><input type="checkbox" id="selectAllPermissions"
+                            class="text-primary"></th>
+                    <th>Permission</th>
+                    <th>Can View</th>
+                    <th>Can Add/Edit</th>
+                    <th>Can Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var permission in permissions)
+                {
+                    <tr data-permission-id="@permission.Id">
+                        <td><input type="checkbox" class="selectPermission"></td>
+                        <td>@permission.Name</td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input can-view" type="checkbox" role="switch"
+                                    onchange="toggleAddEditDelete(this)">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input can-add-edit" type="checkbox" role="switch" disabled>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input can-delete" type="checkbox" role="switch" disabled>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- buttons -->
+    <div class="d-flex justify-content-end p-2">
+        <button type="button" class="btn navbar-color text-white me-2" onclick="RolePermissions()">Save</button>
+
+        <a asp-controller="Permissions" asp-action="Roles"><button type="submit"
+                class="btn btn-outline-primary ">Cancel</button></a>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#role').change(function () {
+                loadRolePermissions();
+            });
+
+            $('#selectAllPermissions').change(function () {
+                var isChecked = $(this).prop('checked');
+                $('#permissionsTable tbody input[type="checkbox"]').prop('checked', isChecked);
+                $('#permissionsTable tbody .can-add-edit, #permissionsTable tbody .can-delete').prop('disabled', !isChecked);
+            });
+
+            $('#permissionsTable').on('change', '.selectPermission', function () {
+                var isChecked = $(this).prop('checked');
+                var $row = $(this).closest('tr');
+                $row.find('.form-check-input').prop('checked', isChecked);
+                $row.find('.can-add-edit, .can-delete').prop('disabled', !isChecked);
+            });
+
+            $('#permissionsTable').on('change', '.can-view', function () {
+                var $row = $(this).closest('tr');
+                var canView = $(this).prop('checked');
+                $row.find('.can-add-edit').prop('disabled', !canView).prop('checked', false);
+                $row.find('.can-delete').prop('disabled', true).prop('checked', false);
+            });
+
+            $('#permissionsTable').on('change', '.can-add-edit', function () {
+                var $row = $(this).closest('tr');
+                var canAddEdit = $(this).prop('checked');
+                $row.find('.can-delete').prop('disabled', !canAddEdit).prop('checked', false);
+            });
+
+            applyBootstrapToggles();
+        });
+
+        function loadRolePermissions() {
+            var roleId = $('#role').val();
+            if (!roleId) {
+                $('#permissionsTable tbody').empty();
+                return;
+            }
+
+            $.ajax({
+                url: '/Permission/GetRolePermissions',
+                type: 'GET',
+                data: { roleId: roleId },
+                success: function (data) {
+                    $('#permissionsTable tbody').empty();
+                    $.each(data, function (index, permission) {
+                        var row = `<tr data-permission-id="${permission.permissionId}">
+                        <td><input type="checkbox" class="selectPermission"></td>
+                        <td>${permission.name}</td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input can-view" type="checkbox" role="switch" ${permission.canView ? 'checked' : ''} onchange="toggleAddEditDelete(this)">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input can-add-edit" type="checkbox" role="switch" ${permission.canAddEdit ? 'checked' : ''} ${!permission.canView ? 'disabled' : ''}>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input can-delete" type="checkbox" role="switch" ${permission.canDelete ? 'checked' : ''} ${!permission.canView || !permission.canAddEdit ? 'disabled' : ''}>
+                            </div>
+                        </td>
+                    </tr>`;
+                        $('#permissionsTable tbody').append(row);
+                    });
+                    applyBootstrapToggles();
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error Fetching Permissions:", error);
+                }
+            });
+        }
+
+        function RolePermissions() {
+            var roleId = $('#role').val();
+            if (!roleId) {
+                alert('Please select a role.');
+                return;
+            }
+
+            var permissions = [];
+            $('#permissionsTable tbody tr').each(function () {
+                var permissionId = $(this).data('permission-id');
+                permissions.push({
+                    PermissionId: permissionId,
+                    RoleId: parseInt(roleId),
+                    CanView: $(this).find('.can-view').prop('checked'),
+                    CanAddEdit: $(this).find('.can-add-edit').prop('checked'),
+                    CanDelete: $(this).find('.can-delete').prop('checked')
+                });
+            });
+
+            $.ajax({
+                url: '/Permission/SaveRolePermissions',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(permissions),
+                success: function (response) {
+                    alert(response.success ? 'Permissions saved successfully!' : 'Failed to save permissions.');
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error Saving Permissions:", error);
+                }
+            });
+        }
+
+        function applyBootstrapToggles() {
+            $('.form-check-input').each(function () {
+                $(this).attr('role', 'switch');
+            });
+        }
+
+        function toggleAddEditDelete(viewCheckbox) {
+            var $row = $(viewCheckbox).closest('tr');
+            var canView = $(viewCheckbox).prop('checked');
+            $row.find('.can-add-edit').prop('disabled', !canView).prop('checked', false);
+            $row.find('.can-delete').prop('disabled', true).prop('checked', false);
+        }
+    </script>
+
+</div>
+</div> *@
+@{
+    ViewData["Title"] = "RolePermissions";
+    var roles = ViewBag.Roles as List<PizzaShop.Domain.ViewModels.RoleViewModel>;
+    var permissions = ViewBag.Permissions as List<PizzaShop.Domain.ViewModels.PermissionViewModel>;
+    var rolePermissions = ViewBag.RolePermissions as List<PizzaShop.Domain.ViewModels.RolePermissionViewModel>;
+    var selectedRoleId = ViewBag.SelectedRoleId as int?;
+}
+
+<div class="col-lg-12 ">
+    <div class="content shadow-lg p-3 mb-5 bg-white rounded mt-3">
+        <div class="d-flex mt-4 justify-content-between align-items-center">
+            <div class="h2 blue-color"><strong>Permission</strong></div>
+            <div class="d-flex align-items-center rightside">
+                <a asp-controller="Permission" asp-action="Role"><button type="button"
+                        class="btn btn-outline-primary">Back</button></a>
+            </div>
+        </div>
+
+        <div class="table-responsive mt-4">
+            <div class="col-6">
+                <div class="form-floating">
+                    <select class="form-select" id="role" name="role" onchange="loadRolePermissions()">
+                        <option value="" selected="@(selectedRoleId == null)">Select Role</option>
+                        @if (roles != null)
+                        {
+                            @foreach (var role in roles)
+                            {
+                                <option value="@role.Id" selected="@(role.Id == selectedRoleId)">
+                                    @role.Name
+                                </option>
+                            }
+                        }
+                    </select>
+
+
+
+                </div>
+            </div>
+        </div>
+
+        <table class="table permissionsTable mt-4" id="permissionsTable">
+            <thead>
+                <tr>
+                    <th style="width: 40px;" class="col1"><input type="checkbox" id="selectAllPermissions"
+                            class="text-primary"></th>
+                    <th>Permission</th>
+                    <th>Can View</th>
+                    <th>Can Add/Edit</th>
+                    <th>Can Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var permission in permissions)
+                {
+                    <tr data-permission-id="@permission.Id">
+                        <td><input type="checkbox" class="selectPermission"></td>
+                        <td>@permission.Name</td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input can-view" type="checkbox" role="switch"
+                                    onchange="toggleAddEditDelete(this)">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input can-add-edit" type="checkbox" role="switch" disabled>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input can-delete" type="checkbox" role="switch" disabled>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- buttons -->
+    <div class="d-flex justify-content-end p-2">
+        <button type="button" class="btn navbar-color text-white me-2" onclick="RolePermissions()">Save</button>
+
+        <a asp-controller="Permissions" asp-action="Roles"><button type="submit"
+                class="btn btn-outline-primary ">Cancel</button></a>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            var selectedRoleId = $('#role').val(); // Get the pre-selected role ID
+
+            if (selectedRoleId) {
+                loadRolePermissions(); // Auto-fetch permissions for the selected role
+            }
+
+            $('#permissionsTable tbody tr').each(function () {
+                updateMainCheckbox($(this));
+            });
+
+            // Handle permission selection
+            $('#permissionsTable').on('change', '.selectPermission', function () {
+                var isChecked = $(this).prop('checked');
+                var $row = $(this).closest('tr');
+
+                // If checked, enable and select Can View, Can Add/Edit, and Can Delete
+                if (isChecked) {
+                    $row.find('.can-view').prop('checked', true);
+                    $row.find('.can-add-edit').prop('checked', true).prop('disabled', false);
+                    $row.find('.can-delete').prop('checked', true).prop('disabled', false);
+                } else {
+                    // If unchecked, uncheck all sub-checkboxes and disable them
+                    $row.find('.can-view, .can-add-edit, .can-delete').prop('checked', false);
+                    $row.find('.can-add-edit, .can-delete').prop('disabled', true);
+                }
+            });
+
+            // Handle Can View checkbox
+            $('#permissionsTable').on('change', '.can-view', function () {
+                var $row = $(this).closest('tr');
+                var isChecked = $(this).prop('checked');
+
+                if (isChecked) {
+                    $row.find('.can-add-edit').prop('disabled', false);
+                } else {
+                    $row.find('.can-add-edit, .can-delete').prop('checked', false).prop('disabled', true);
+                }
+
+                updateMainCheckbox($row);
+            });
+
+            // Handle Can Add/Edit checkbox
+            $('#permissionsTable').on('change', '.can-add-edit', function () {
+                var $row = $(this).closest('tr');
+                var isChecked = $(this).prop('checked');
+
+                if (isChecked) {
+                    $row.find('.can-delete').prop('disabled', false);
+                } else {
+                    $row.find('.can-delete').prop('checked', false).prop('disabled', true);
+                }
+
+                updateMainCheckbox($row);
+            });
+
+            // Handle Can Delete checkbox
+            $('#permissionsTable').on('change', '.can-delete', function () {
+                var $row = $(this).closest('tr');
+                updateMainCheckbox($row);
+            });
+
+            // Function to update the main checkbox based on individual selections
+            function updateMainCheckbox($row) {
+                var canView = $row.find('.can-view').prop('checked');
+                var canAddEdit = $row.find('.can-add-edit').prop('checked');
+                var canDelete = $row.find('.can-delete').prop('checked');
+
+                if (canView && canAddEdit && canDelete) {
+                    $row.find('.selectPermission').prop('checked', true);
+                } else {
+                    $row.find('.selectPermission').prop('checked', false);
+                }
+            }
+
+            $('#role').change(function () {
+                loadRolePermissions();
+            });
+
+            $('#selectAllPermissions').change(function () {
+                var isChecked = $(this).prop('checked');
+                $('#permissionsTable tbody input[type="checkbox"]').prop('checked', isChecked);
+                $('#permissionsTable tbody .can-add-edit, #permissionsTable tbody .can-delete').prop('disabled', !isChecked);
+            });
+
+            $('#permissionsTable').on('change', '.selectPermission', function () {
+                var isChecked = $(this).prop('checked');
+                var $row = $(this).closest('tr');
+                $row.find('.form-check-input').prop('checked', isChecked);
+                $row.find('.can-add-edit, .can-delete').prop('disabled', !isChecked);
+            });
+
+            $('#permissionsTable').on('change', '.can-view', function () {
+                var $row = $(this).closest('tr');
+                var canView = $(this).prop('checked');
+                $row.find('.can-add-edit').prop('disabled', !canView).prop('checked', false);
+                $row.find('.can-delete').prop('disabled', true).prop('checked', false);
+            });
+
+            $('#permissionsTable').on('change', '.can-add-edit', function () {
+                var $row = $(this).closest('tr');
+                var canAddEdit = $(this).prop('checked');
+                $row.find('.can-delete').prop('disabled', !canAddEdit).prop('checked', false);
+            });
+
+            applyBootstrapToggles();
+        });
+
+        function loadRolePermissions() {
+            var roleId = $('#role').val();
+            if (!roleId) {
+                $('#permissionsTable tbody').empty();
+                return;
+            }
+
+            $.ajax({
+                url: '/Permission/GetRolePermissions',
+                type: 'GET',
+                data: { roleId: roleId },
+                success: function (data) {
+                    $('#permissionsTable tbody').empty();
+                    $.each(data, function (index, permission) {
+                        var row = `<tr data-permission-id="${permission.permissionId}">
+                        <td><input type="checkbox" class="selectPermission"></td>
+                        <td>${permission.name}</td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input can-view" type="checkbox" role="switch" ${permission.canView ? 'checked' : ''} onchange="toggleAddEditDelete(this)">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input can-add-edit" type="checkbox" role="switch" ${permission.canAddEdit ? 'checked' : ''} ${!permission.canView ? 'disabled' : ''}>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input can-delete" type="checkbox" role="switch" ${permission.canDelete ? 'checked' : ''} ${!permission.canView || !permission.canAddEdit ? 'disabled' : ''}>
+                            </div>
+                        </td>
+                    </tr>`;
+                        $('#permissionsTable tbody').append(row);
+                    });
+                    applyBootstrapToggles();
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error Fetching Permissions:", error);
+                }
+            });
+        }
+
+        function RolePermissions() {
+            var roleId = $('#role').val();
+            if (!roleId) {
+                alert('Please select a role.');
+                return;
+            }
+
+            var permissions = [];
+            $('#permissionsTable tbody tr').each(function () {
+                var permissionId = $(this).data('permission-id');
+                permissions.push({
+                    PermissionId: permissionId,
+                    RoleId: parseInt(roleId),
+                    CanView: $(this).find('.can-view').prop('checked'),
+                    CanAddEdit: $(this).find('.can-add-edit').prop('checked'),
+                    CanDelete: $(this).find('.can-delete').prop('checked')
+                });
+            });
+
+            $.ajax({
+                url: '/Permission/SaveRolePermissions',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(permissions),
+                success: function (response) {
+                    alert(response.success ? 'Permissions saved successfully!' : 'Failed to save permissions.');
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error Saving Permissions:", error);
+                }
+            });
+        }
+
+        function applyBootstrapToggles() {
+            $('.form-check-input').each(function () {
+                $(this).attr('role', 'switch');
+            });
+        }
+
+
+
+        function toggleAddEditDelete(viewCheckbox) {
+            var $row = $(viewCheckbox).closest('tr');
+            var canView = $(viewCheckbox).prop('checked');
+            $row.find('.can-add-edit').prop('disabled', !canView).prop('checked', false);
+            $row.find('.can-delete').prop('disabled', true).prop('checked', false);
+        }
+    </script>
+
+</div>
+</div>

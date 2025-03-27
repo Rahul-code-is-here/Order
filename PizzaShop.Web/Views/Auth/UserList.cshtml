@@ -1,0 +1,212 @@
+<!-- Dropdown for selecting page size -->
+<div class="d-flex justify-content-between mt-3">
+    <div>
+        <label for="pageSize">Show</label>
+        <select id="pageSize" class="form-select d-inline-block w-auto ms-2" onchange="changePageSize()">
+            <option value="5" selected="@(ViewBag.PageSize == 5)">5</option>
+            <option value="10" selected="@(ViewBag.PageSize == 10)">10</option>
+            <option value="15" selected="@(ViewBag.PageSize == 15)">15</option>
+        </select>
+        <label>entries</label>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="d-flex justify-content-between mt-3">
+        <form method="get" action="@Url.Action("UserList")">
+            <input type="text" name="searchQuery" value="@ViewBag.SearchQuery" placeholder="Search users..."
+                class="form-control d-inline-block w-auto">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+         <a href="@Url.Action("AddUser", "User")" class="btn btn-sm">
+                        Add User
+       </a>
+    </div>
+
+</div>
+
+ <table class="table table-responsive table-striped mt-3">
+    <thead>
+        <tr>
+            <th>
+                Name
+                <a
+                    href="@Url.Action("UserList", new { sortBy = "Name", sortOrder = "asc", pageNumber = ViewBag.CurrentPage, pageSize = ViewBag.PageSize, searchQuery = ViewBag.SearchQuery })">
+                    ▲
+                </a>
+                <a
+                    href="@Url.Action("UserList", new { sortBy = "Name", sortOrder = "desc", pageNumber = ViewBag.CurrentPage, pageSize = ViewBag.PageSize, searchQuery = ViewBag.SearchQuery })">
+                    ▼
+                </a>
+            </th>
+            <th>
+                Email
+                <a
+                    href="@Url.Action("UserList", new { sortBy = "Email", sortOrder = "asc", pageNumber = ViewBag.CurrentPage, pageSize = ViewBag.PageSize, searchQuery = ViewBag.SearchQuery })">
+                    ▲
+                </a>
+                <a
+                    href="@Url.Action("UserList", new { sortBy = "Email", sortOrder = "desc", pageNumber = ViewBag.CurrentPage, pageSize = ViewBag.PageSize, searchQuery = ViewBag.SearchQuery })">
+                    ▼
+                </a>
+            </th>
+            <th>
+                Phone
+                <a
+                    href="@Url.Action("UserList", new { sortBy = "Phone", sortOrder = "asc", pageNumber = ViewBag.CurrentPage, pageSize = ViewBag.PageSize, searchQuery = ViewBag.SearchQuery })">
+                    ▲
+                </a>
+                <a
+                    href="@Url.Action("UserList", new { sortBy = "Phone", sortOrder = "desc", pageNumber = ViewBag.CurrentPage, pageSize = ViewBag.PageSize, searchQuery = ViewBag.SearchQuery })">
+                    ▼
+                </a>
+            </th>
+            <th>
+                Role
+                <a
+                    href="@Url.Action("UserList", new { sortBy = "Role", sortOrder = "asc", pageNumber = ViewBag.CurrentPage, pageSize = ViewBag.PageSize, searchQuery = ViewBag.SearchQuery })">
+                    ▲
+                </a>
+                <a
+                    href="@Url.Action("UserList", new { sortBy = "Role", sortOrder = "desc", pageNumber = ViewBag.CurrentPage, pageSize = ViewBag.PageSize, searchQuery = ViewBag.SearchQuery })">
+                    ▼
+                </a>
+            </th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.FirstName @user.LastName</td>
+                <td>@user.Email</td>
+                <td>@user.Phone</td>
+                <td>@(user.RoleId == 1 ? "Admin" : "User")</td>
+                <td>
+                     <button class="border-0 btn @(user.IsDeleted ? "bg-danger" : "bg-success") text-white rounded-pill">
+                        @(user.IsDeleted ? "Deleted" : "Active")
+                    </button>
+                </td>
+                <td>
+                    <a href="@Url.Action("EditUser", new { id = user.Id })" class="btn btn-sm">
+                        <img src="~/images/icons8-pencil-50.png" height="24" width="24" alt="Edit">
+                    </a>
+                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-@user.Id">
+                        <img src="~/images/icons8-delete-80.png" height="24" width="24" alt="Delete">
+                    </button>
+                </td>
+            </tr>
+              <!-- Delete Confirmation Modal -->
+            <div class="modal fade" id="deleteModal-@user.Id" tabindex="-1" aria-labelledby="deleteModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Confirm Deletion</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body text-center">
+                            <i class="fas fa-exclamation-triangle warning-icon"></i>
+                            <p>Are you sure you want to delete @user.FirstName @user.LastName?</p>
+                        </div>
+                        <div class="modal-footer justify-content-center">
+                            <form method="post" action="@Url.Action("SoftDeleteUser", new { id = user.Id })">
+                                <button type="submit" class="btn btn-danger">Yes</button>
+                            </form>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </tbody>
+</table> 
+@* <table class="table table-striped mt-3">
+    
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.FirstName @user.LastName</td>
+                <td>@user.Email</td>
+                <td>@user.Phone</td>
+                <td>@(user.RoleId == 1 ? "Admin" : "User")</td>
+                <td>
+                    <button class="border-0 btn @(user.IsDeleted ? "bg-danger" : "bg-success") text-white rounded-pill">
+                        @(user.IsDeleted ? "Deleted" : "Active")
+                    </button>
+                </td>
+                <td>
+                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-@user.Id">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+
+            <!-- Delete Confirmation Modal -->
+            <div class="modal fade" id="deleteModal-@user.Id" tabindex="-1" aria-labelledby="deleteModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Confirm Deletion</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body text-center">
+                            <i class="fas fa-exclamation-triangle warning-icon"></i>
+                            <p>Are you sure you want to delete @user.FirstName @user.LastName?</p>
+                        </div>
+                        <div class="modal-footer justify-content-center">
+                            <form method="post" action="@Url.Action("SoftDeleteUser", new { id = user.Id })">
+                                <button type="submit" class="btn btn-danger">Yes</button>
+                            </form>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </tbody>
+</table> *@
+
+
+
+
+<!-- Pagination Controls -->
+<div class="d-flex justify-content-center mt-4">
+    @if (ViewBag.CurrentPage > 1)
+    {
+        <a href="@Url.Action("UserList", new { pageNumber = ViewBag.CurrentPage - 1, pageSize = ViewBag.PageSize })"
+            class="btn btn-primary me-2">Previous</a>
+    }
+
+    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+    {
+        <a href="@Url.Action("UserList", new { pageNumber = i, pageSize = ViewBag.PageSize })"
+            class="btn @(ViewBag.CurrentPage == i ? "btn-secondary" : "btn-light") me-2">@i</a>
+    }
+
+    @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+    {
+        <a href="@Url.Action("UserList", new { pageNumber = ViewBag.CurrentPage + 1, pageSize = ViewBag.PageSize })"
+            class="btn btn-primary">Next</a>
+    }
+</div>
+
+<script>
+    function changePageSize() {
+        var selectedSize = document.getElementById("pageSize").value;
+        window.location.href = '@Url.Action("UserList")' + '?pageSize=' + selectedSize;
+    }
+</script>

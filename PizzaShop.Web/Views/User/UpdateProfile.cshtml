@@ -1,0 +1,194 @@
+
+
+@model PizzaShop.Domain.ViewModels.UpdateProfileModel
+
+<div class="d-flex mt-3 p-3 justify-content-between">
+    <div class="h2 blue-color"><strong>Profile</strong></div>
+</div>
+ <form asp-controller="User" asp-action="UpdateProfile" method="post" enctype="multipart/form-data">
+<div class="bg-white user-box ms-4 me-4 p-3 mt-3">
+    <div class="profile-head">
+        <div>
+            @* <img src="~/images/profile_div_bg.jpg" style="width: 100%; height: 65px;" id="profile-bg" alt=""> *@
+           
+        </div>
+        <div class=" d-flex" style="height: 44px;">
+           @if(Model.PathOfProfilePicture != null)
+            {
+                <img src="@Model.PathOfProfilePicture" alt="img" onclick="document.getElementById('profile-chooser').click()"
+                    style="position: relative; top:-10px; height: 70px; left: 18px;">
+                    <img src="~/images/CameraIcon.jfif" alt="" onclick="document.getElementById('profile-chooser').click()"
+                        style="position: relative; top:30px; height: 30px; left: 0px;">
+            }
+            else
+            {
+                <img src="~/images/Default_pfp.svg.png" alt="" onclick="document.getElementById('profile-chooser').click()"
+                    style="position: relative; top:-30px; height: 90px; left: 18px;">
+                    <img src="~/images/CameraIcon.jfif" alt="" onclick="document.getElementById('profile-chooser').click()"
+                        style="position: relative; top:30px; height: 30px; left: 0px;">
+            }
+            @* <h1>hello</h1> *@
+
+            <input type="file" asp-for=ProfilePicture class="form-control d-none" id="profile-chooser">
+            <div class="ps-4 ms-2 mt-1">
+                <h3 class="m-0">@Model.FirstName @Model.LastName</h3>
+                <p>@Model.UserName</p>
+            </div>
+            <div class="ms-auto me-2 mt-3">
+                <p>@Model.Email</p>
+            </div>
+        </div>
+    </div>
+
+   
+        <div class="text-center">
+            <div class="row row-cols-2 pt-4 mt-1">
+                <div class="col-lg-6 col-12">
+                    <div class="form-floating mb-3">
+                        <input asp-for="FirstName" class="form-control" required>
+                        <label for="FirstName">First Name</label>
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-12">
+                    <div class="form-floating mb-3">
+                        <input asp-for="LastName" class="form-control" required>
+                        <label for="LastName">Last Name</label>
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-12">
+                    <div class="form-floating mb-3">
+                        <input asp-for="UserName" class="form-control" required>
+                        <label for="UserName">User Name</label>
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-12">
+                    <div class="form-floating mb-3">
+                        <input asp-for="Phone" class="form-control" required>
+                        <label for="Phone">Phone</label>
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-4 col-12 form-floating mb-3">
+                    <select asp-for="CountryID" id="countryDropdown" class="form-select">
+                        <option selected value="">Select Country</option>
+                        @foreach (var country in Model.Countries)
+                        {
+                            <option value="@country.CountryId">@country.CountryName</option>
+                        }
+                    </select>
+                    <label for="CountryID">Country</label>
+                </div>
+                <div class="col-lg-4 col-12 form-floating mb-3">
+                    <select asp-for="StateID" id="stateDropdown" class="form-select">
+                        <option selected value="">Select State</option>
+                        @foreach (var state in Model.States)
+                        {
+                            <option value="@state.StateId" selected="@(state.StateId == Model.StateID)">@state.StateName
+                            </option>
+                        }
+                    </select>
+                    <label for="StateID">State</label>
+                </div>
+                <div class="col-lg-4 col-12 form-floating mb-3">
+                    <select asp-for="CityID" id="cityDropdown" class="form-select">
+                        <option selected value="">Select City</option>
+                        @foreach (var city in Model.Cities)
+                        {
+                            <option value="@city.CityId" selected="@(city.CityId == Model.CityID)">@city.CityName</option>
+                        }
+                    </select>
+                    <label for="CityID">City</label>
+                </div>
+                <div class="col-lg-8 col-12 form-floating">
+                    <div class="form-floating mb-3">
+                        <input asp-for="Address" class="form-control">
+                        <label for="Address">Address</label>
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-12 form-floating">
+                    <div class="form-floating mb-3">
+                        <input asp-for="Zipcode" class="form-control">
+                        <label for="Zipcode">Zipcode</label>
+                        <span asp-validation-for="Zipcode" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end gap-2">
+                <button type="submit" class="btn btn-outline-primary">Update</button>
+                <a href="@Url.Action("Dashboard", "Home")" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </div>
+    </form>
+    @*
+    <form asp-action="UpdateProfile" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Email" />
+
+    <div class="mb-3">
+    <label class="form-label">Profile Image</label>
+    <input type="file" class="form-control" asp-for="ProfileImage" />
+    @if (!string.IsNullOrEmpty(Model.ProfileImageUrl))
+    {
+    <img src="@Model.ProfileImageUrl" width="100" class="mt-2 rounded-circle" alt="Profile Image" />
+    }
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    </form> *@
+
+</div>
+
+<script>
+    document.getElementById('profile-chooser').addEventListener('change', function () {
+        var messageDiv = document.getElementById('image-selected-message');
+        var file = this.files[0];
+        var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.svg)$/i;
+        if (!allowedExtensions.exec(file.name)) {
+            alert('Please upload file having extensions .jpeg/.jpg/.png/.svg only.');
+            this.value = '';
+            messageDiv.classList.add('d-none');
+            return false;
+        }
+        if (this.files && this.files.length > 0) {
+            messageDiv.classList.remove('d-none');
+            var fileName = this.files[0].name;
+            messageDiv.textContent = fileName + ' is selected';
+        } else {
+            messageDiv.classList.add('d-none');
+        }
+    });
+
+
+    document.getElementById("countryDropdown").addEventListener("change", function () {
+        var countryId = this.value;
+        fetch(`/User/GetStates?countryId=${countryId}`)
+            .then(response => response.json())
+            .then(states => {
+                var stateDropdown = document.getElementById("stateDropdown");
+                stateDropdown.innerHTML = '<option value="">Select State</option>';
+                states.forEach(state => {
+                    stateDropdown.innerHTML += `<option value="${state.stateId}">${state.stateName}</option>`;
+                });
+                document.getElementById("cityDropdown").innerHTML = '<option value="">Select City</option>';
+            });
+    });
+
+    document.getElementById("stateDropdown").addEventListener("change", function () {
+        var stateId = this.value;
+        fetch(`/User/GetCities?stateId=${stateId}`)
+            .then(response => response.json())
+            .then(cities => {
+                var cityDropdown = document.getElementById("cityDropdown");
+                cityDropdown.innerHTML = '<option value="">Select City</option>';
+                cities.forEach(city => {
+                    cityDropdown.innerHTML += `<option value="${city.cityId}">${city.cityName}</option>`;
+                });
+            });
+    });
+</script>
